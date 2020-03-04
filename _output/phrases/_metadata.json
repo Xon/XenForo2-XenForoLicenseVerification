@@ -424,5 +424,11 @@
         "version_id": 1000070,
         "version_string": "1.0.0",
         "hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "sv_xenforo_licenses.txt": {
+        "global_cache": false,
+        "version_id": 3020070,
+        "version_string": "3.2.0",
+        "hash": "94bc64a1d3e3070fa11bf070dbe28421"
     }
 }

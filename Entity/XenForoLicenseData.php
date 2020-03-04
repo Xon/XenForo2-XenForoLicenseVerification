@@ -2,6 +2,7 @@
 
 namespace LiamW\XenForoLicenseVerification\Entity;
 
+use XF\Entity\User;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -16,6 +17,9 @@ use XF\Mvc\Entity\Structure;
  * @property bool|null domain_match
  * @property bool can_transfer
  * @property int validation_date
+ *
+ * RELATIONS
+ * @property User User
  */
 class XenForoLicenseData extends Entity
 {
@@ -96,6 +100,14 @@ class XenForoLicenseData extends Entity
 				'nullable' => true,
 				'api' => true
 			]
+		];
+		$structure->relations = [
+			'User' => [
+				'entity' => 'XF:User',
+				'type' => self::TO_ONE,
+				'conditions' => 'user_id',
+				'primary' => true
+			],
 		];
 		$structure->behaviors = [
 			'XF:ChangeLoggable' => [
