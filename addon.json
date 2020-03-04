@@ -4,12 +4,12 @@
     "description": "Verify the XenForo License of board members.",
     "version_id": 3020070,
     "version_string": "3.2.0",
-    "dev": "Liam Williams",
-    "dev_url": "https://lw-addons.net",
+    "dev": "Atelier Aphelion",
+    "dev_url": "https://atelieraphelion.com/",
     "faq_url": "",
     "support_url": "https://xenforo.com/community/threads/xenforo-license-verification.132213/",
     "extra_urls": {
-        "Contribute on GitHub": "https://github.com/lw-addons/XenForo2-XenForoLicenseVerification"
+        "Contribute on GitHub": "https://github.com/Xon/XenForo2-XenForoLicenseVerification"
     },
     "require": {
         "XF": [
