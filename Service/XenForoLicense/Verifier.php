@@ -30,6 +30,7 @@ class Verifier extends AbstractService
 	];
 
 	protected $errors = [];
+	protected $isValid = null;
 
 	public function __construct(\XF\App $app, $token, $domain = null, array $options = [])
 	{
@@ -99,34 +100,31 @@ class Verifier extends AbstractService
 			return false;
 		}
 
+		if ($this->isValid !== null)
+		{
+			return $this->isValid;
+		}
+
 		$this->api->validate();
 
 		if ($this->api->getResponseCode() == 503 && \XF::options()->liamw_xenforolicenseverification_rate_limit_action == 'block')
 		{
-			$error = \XF::phraseDeferred('liamw_xenforolicenseverification_error_occurred_while_attempting_to_verify_your_xenforo_license');
-
-			return false;
+			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_error_occurred_while_attempting_to_verify_your_xenforo_license');
 		}
 
 		if (!$this->api->licenseExists())
 		{
-			$error = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
-
-			return false;
+			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}
 
 		if (!$this->api->is_valid)
 		{
-			$error = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
-
-			return false;
+			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}
 
 		if ($this->options['checkDomain'] && !$this->api->domain_match)
 		{
-			$error = \XF::phraseDeferred('liamw_xenforolicenseverification_domain_not_match_license');
-
-			return false;
+			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_domain_not_match_license');
 		}
 
 		if ($this->options['uniqueChecks']['license'])
@@ -134,9 +132,7 @@ class Verifier extends AbstractService
 			if ($this->finder('XF:User')->where('user_id', '!=', \XF::visitor()->user_id)
 					->where('XenForoLicense.license_token', $this->api->license_token)->total() > 0)
 			{
-				$error = \XF::phraseDeferred('liamw_xenforolicenseverification_license_token_not_unique');
-
-				return false;
+				$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_license_token_not_unique');
 			}
 		}
 
@@ -145,13 +141,14 @@ class Verifier extends AbstractService
 			if ($this->finder('XF:User')->where('user_id', '!=', \XF::visitor()->user_id)
 					->where('XenForoLicense.customer_token', $this->api->customer_token)->total() > 0)
 			{
-				$error = \XF::phraseDeferred('liamw_xenforolicenseverification_customer_token_not_unique');
-
-				return false;
+				$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_customer_token_not_unique');
 			}
 		}
 
-		return true;
+		$error = reset($this->errors);
+		$this->isValid = empty($this->errors);
+
+		return $this->isValid;
 	}
 
 	public function applyLicenseData(User $user)
