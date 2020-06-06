@@ -59,6 +59,11 @@
 			{$user.XenForoLicense.domain}
 		</xf:formrow>
 
+        <xf:formrow label="{{ phrase('liamw_xenforolicenseverification_transfer') }}"
+                    explain="">
+            {{ $user.XenForoLicense.can_transfer ? phrase('yes') : phrase('no') }}
+        </xf:formrow>
+
 		<xf:formrow label="{{ phrase('liamw_xenforolicenseverification_last_verification_date') }}">
 			{{ date($user.XenForoLicense.validation_date) }}
 		</xf:formrow>
