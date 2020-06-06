@@ -153,10 +153,7 @@ class Verifier extends AbstractService
 
 	public function applyLicenseData(User $user)
 	{
-		if (!$this->isValid())
-		{
-			throw new \BadMethodCallException("Cannot set details on user when license isn't valid.");
-		}
+		\XF::db()->beginTransaction();
 
 		$licenseData = $user->getRelationOrDefault('XenForoLicense');
 		$licenseData->bulkSet([
@@ -185,5 +182,8 @@ class Verifier extends AbstractService
 			\XF::app()->service('XF:User\UserGroupChange')
 				->addUserGroupChange($user->user_id, 'xfLicenseTransferable', $this->options['transferableUserGroup']);
 		}
+
+		$user->save(true, false);
+		\XF::db()->commit();
 	}
 }

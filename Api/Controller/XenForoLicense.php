@@ -65,7 +65,6 @@ class XenForoLicense extends AbstractController
 		if ($verificationService->isValid($error))
 		{
 			$verificationService->applyLicenseData($user);
-			$user->save();
 
 			return $this->apiSuccess(['user' => $user->toApiResult(Entity::VERBOSITY_QUIET)]);
 		}

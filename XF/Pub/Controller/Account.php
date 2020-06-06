@@ -39,7 +39,6 @@ class Account extends XFCP_Account
 			{
 				$user = \XF::visitor();
 				$verificationService->applyLicenseData($user);
-				$user->save();
 
 				return $this->redirect($this->buildLink('account/xenforo-license'));
 			}

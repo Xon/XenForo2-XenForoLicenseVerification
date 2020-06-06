@@ -47,7 +47,6 @@ class LicenseValidationExpiry extends AbstractJob
 			if ($recheck && $expiredUser->XenForoLicense->validation_token && $validationService->isValid())
 			{
 				$validationService->applyLicenseData($expiredUser);
-				$expiredUser->saveIfChanged();
 			}
 			else
 			{

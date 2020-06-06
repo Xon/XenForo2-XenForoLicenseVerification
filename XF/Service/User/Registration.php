@@ -57,7 +57,6 @@ class Registration extends XFCP_Registration
 		if ($this->liamw_xenforolicenseverification_verificationService)
 		{
 			$this->liamw_xenforolicenseverification_verificationService->applyLicenseData($user);
-			$user->save();
 		}
 
 		return $user;
