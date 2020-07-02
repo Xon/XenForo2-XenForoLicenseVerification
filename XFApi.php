@@ -20,9 +20,9 @@ class XFApi
 	const VALIDATION_URL = "https://xenforo.com/customer-api/license-lookup.json";
 
 	protected $httpClient;
-	protected $rawResponse;
-	protected $responseCode;
-	protected $responseJson;
+	protected $rawResponse = '';
+	protected $responseCode = 500;
+	protected $responseJson = [];
 
 	protected $token;
 	protected $domain;
@@ -55,6 +55,7 @@ class XFApi
 
 	public function validate()
 	{
+		$this->responseJson = [];
 		try
 		{
 			if ($this->isGuzzle6())
@@ -79,7 +80,7 @@ class XFApi
 			$this->rawResponse = $this->httpClient->post(self::VALIDATION_URL, $requestOptions);
 
 			$this->responseCode = $this->rawResponse->getStatusCode();
-			$this->responseJson = \json_decode($this->rawResponse->getBody(), true);
+			$this->responseJson = \json_decode($this->rawResponse->getBody(), true) ?: [];
 		} catch (ClientException $e)
 		{
 			$this->responseCode = $e->getCode();
@@ -104,12 +105,12 @@ class XFApi
 
 	final public function __get($name)
 	{
-		return $this->responseJson[$name];
+		return isset($this->responseJson[$name]) ? $this->responseJson[$name] : null;
 	}
 
 	final public function __isset($name)
 	{
-		return $this->responseJson && isset($this->responseJson[$name]);
+		return isset($this->responseJson[$name]);
 	}
 
 	final public function __set($name, $value)
