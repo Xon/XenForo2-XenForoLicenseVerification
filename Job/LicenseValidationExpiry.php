@@ -32,7 +32,7 @@ class LicenseValidationExpiry extends AbstractJob
 
 		$done = 0;
 
-		/** @var \XF\Entity\User $expiredUser */
+		/** @var \LiamW\XenForoLicenseVerification\XF\Entity\User $expiredUser */
 		foreach ($expiredUsers AS $expiredUser)
 		{
 			$done++;
@@ -50,8 +50,7 @@ class LicenseValidationExpiry extends AbstractJob
 			}
 			else
 			{
-				\XF::repository('LiamW\XenForoLicenseVerification:XenForoLicenseValidation')
-					->expireValidation($expiredUser);
+				$expiredUser->expireValidation();
 			}
 
 			\XF::db()->commit();

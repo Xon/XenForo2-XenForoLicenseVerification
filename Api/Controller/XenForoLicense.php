@@ -13,16 +13,17 @@ class XenForoLicense extends AbstractController
 {
 	/**
 	 * @api-route users/{id}/xenforo-license
-	 *
-	 * @api-desc Gets the XenForo license details for the specified user.
-	 *
-	 * @api-out XenForoLicense $xenforoLicense
+	 * @api-desc  Gets the XenForo license details for the specified user.
+	 * @api-out   XenForoLicense $xenforoLicense
+	 * @param ParameterBag $params
+	 * @return \XF\Api\Mvc\Reply\ApiResult
+	 * @throws \XF\Mvc\Reply\Exception
 	 */
 	public function actionGetXenForoLicense(ParameterBag $params)
 	{
 		$this->assertApiScopeByRequestMethod('user:xenforo_license');
 
-		$user = $this->assertViewableUser($params->user_id);
+		$user = $this->assertViewableUser($params->get('user_id'));
 
 		$result = [
 			'xenforoLicense' => $user->XenForoLicense ? $user->XenForoLicense->toApiResult(Entity::VERBOSITY_VERBOSE) : null
@@ -33,11 +34,12 @@ class XenForoLicense extends AbstractController
 
 	/**
 	 * @api-route users/{id}/xenforo-license
-	 *
-	 * @api-desc Verify a users XenForo license.
-	 *
-	 * @api-out true $success
-	 * @api-out User $user
+	 * @api-desc  Verify a users XenForo license.
+	 * @api-out   true $success
+	 * @api-out   User $user
+	 * @param ParameterBag $params
+	 * @return \XF\Api\Mvc\Reply\ApiResult|\XF\Mvc\Reply\Error
+	 * @throws \XF\Mvc\Reply\Exception
 	 */
 	public function actionPostXenForoLicense(ParameterBag $params)
 	{
@@ -45,7 +47,7 @@ class XenForoLicense extends AbstractController
 
 		$this->assertRegisteredUser();
 
-		$user = $this->assertViewableUser($params->user_id);
+		$user = $this->assertViewableUser($params->get('user_id'));
 
 		if ($user->user_id != \XF::visitor()->user_id)
 		{
@@ -76,18 +78,18 @@ class XenForoLicense extends AbstractController
 
 	/**
 	 * @api-route users/{id}/xenforo-license
-	 *
-	 * @api-desc Delete a users XenForo license data.
-	 *
-	 * @api-in bool $remove_customer_token If specified, the customer token will also be removed, regardless of option.
-	 *
-	 * @api-out true $success
+	 * @api-desc  Delete a users XenForo license data.
+	 * @api-in    bool $remove_customer_token If specified, the customer token will also be removed, regardless of option.
+	 * @api-out   true $success
+	 * @param ParameterBag $params
+	 * @return \XF\Api\Mvc\Reply\ApiResult
+	 * @throws \XF\Mvc\Reply\Exception
 	 */
 	public function actionDeleteXenForoLicense(ParameterBag $params)
 	{
 		$this->assertApiScopeByRequestMethod('user:xenforo_license');
 
-		$user = $this->assertViewableUser($params->user_id);
+		$user = $this->assertViewableUser($params->get('user_id'));
 
 		$removeCustomerToken = \XF::visitor()->hasAdminPermission('user') && $this->filter('remove_customer_token', 'bool');
 
@@ -101,13 +103,13 @@ class XenForoLicense extends AbstractController
 	 * @param mixed $with
 	 * @param bool $basicProfileOnly
 	 *
-	 * @return \XF\Entity\User
+	 * @return \LiamW\XenForoLicenseVerification\XF\Entity\User
 	 *
 	 * @throws \XF\Mvc\Reply\Exception
 	 */
 	protected function assertViewableUser($id, $with = 'api', $basicProfileOnly = true)
 	{
-		/** @var \XF\Entity\User $user */
+		/** @var \LiamW\XenForoLicenseVerification\XF\Entity\User $user */
 		$user = $this->assertRecordExists('XF:User', $id, $with);
 
 		if (\XF::isApiCheckingPermissions())

@@ -12,9 +12,11 @@ use XF\Entity\CronEntry;
 
 class Setup extends AbstractSetup
 {
+	use StepRunnerInstallTrait;
+	use StepRunnerUninstallTrait;
 	use StepRunnerUpgradeTrait;
 
-	public function install(array $stepParams = [])
+	public function installStep1()
 	{
 		$this->schemaManager()->createTable('xf_liamw_xenforo_license_data', function(Create $table)
 		{
@@ -148,7 +150,7 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function uninstall(array $stepParams = [])
+	public function uninstallStep1()
 	{
 		$this->schemaManager()->dropTable('xf_liamw_xenforo_license_data');
 	}

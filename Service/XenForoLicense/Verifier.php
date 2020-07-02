@@ -2,11 +2,8 @@
 
 namespace LiamW\XenForoLicenseVerification\Service\XenForoLicense;
 
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
 use LiamW\XenForoLicenseVerification\XFApi;
 use XF\Entity\User;
-use XF\Repository\Banning;
 use XF\Service\AbstractService;
 
 class Verifier extends AbstractService

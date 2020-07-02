@@ -57,14 +57,16 @@ class Account extends XFCP_Account
 
 	public function actionXenForoLicenseRemove()
 	{
-		if (\XF::visitor()->user_state != 'valid' || !\XF::visitor()->XenForoLicense)
+		/** @var \LiamW\XenForoLicenseVerification\XF\Entity\User $user */
+		$user = \XF::visitor();
+		if ($user->user_state != 'valid' || !$user->XenForoLicense)
 		{
 			return $this->redirect($this->buildLink('account/xenforo-license'));
 		}
 
 		if ($this->isPost())
 		{
-			$this->repository('LiamW\XenForoLicenseVerification:XenForoLicenseValidation')->expireValidation(\XF::visitor(), false, false);
+			$user->expireValidation(false, false);
 
 			return $this->redirect($this->buildLink('account/xenforo-license'));
 		}

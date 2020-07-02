@@ -13,6 +13,11 @@ namespace LiamW\XenForoLicenseVerification\XF\ChangeLog
 	class XFCP_User extends \XF\ChangeLog\User {}
 }
 
+namespace LiamW\XenForoLicenseVerification\XF\Entity
+{
+	class XFCP_User extends \XF\Entity\User {}
+}
+
 namespace LiamW\XenForoLicenseVerification\XF\Pub\Controller
 {
 	class XFCP_Account extends \XF\Pub\Controller\Account {}
