@@ -26,6 +26,7 @@ class Verifier extends AbstractService
 		'checkDomain' => null
 	];
 
+	protected $apiFailure = false;
 	protected $errors = [];
 	protected $isValid = null;
 
@@ -36,6 +37,22 @@ class Verifier extends AbstractService
 		$this->domain = $domain;
 
 		parent::__construct($app);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isApiFailure()
+	{
+		return $this->apiFailure;
+	}
+
+	/**
+	 * @param bool $apiFailure
+	 */
+	public function setApiFailure($apiFailure)
+	{
+		$this->apiFailure = $apiFailure;
 	}
 
 	protected function setup()
@@ -104,12 +121,16 @@ class Verifier extends AbstractService
 
 		$this->api->validate();
 
-		if ($this->api->getResponseCode() == 503 && \XF::options()->liamw_xenforolicenseverification_rate_limit_action == 'block')
+		$responseCode = $this->api->getResponseCode();
+		if ($responseCode >= 500)
 		{
+			$this->apiFailure = true;
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_error_occurred_while_attempting_to_verify_your_xenforo_license');
+
+			return false;
 		}
 
-		if (!$this->api->licenseExists())
+		if ($responseCode != 200)
 		{
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}

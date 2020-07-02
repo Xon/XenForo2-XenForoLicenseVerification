@@ -98,11 +98,6 @@ class XFApi
 		return $this->responseCode;
 	}
 
-	public function licenseExists()
-	{
-		return $this->responseCode == 200;
-	}
-
 	final public function __get($name)
 	{
 		return isset($this->responseJson[$name]) ? $this->responseJson[$name] : null;

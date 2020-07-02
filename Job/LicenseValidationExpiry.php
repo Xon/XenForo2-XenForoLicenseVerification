@@ -37,19 +37,34 @@ class LicenseValidationExpiry extends AbstractJob
 		{
 			$done++;
 
-			$this->data['start'] = $expiredUser->user_id;
-
 			/** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
 			$validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $expiredUser->XenForoLicense->validation_token, $expiredUser->XenForoLicense->domain);
 
-			if ($recheck && $expiredUser->XenForoLicense->validation_token && $validationService->isValid())
+			if ($recheck && $expiredUser->XenForoLicense->validation_token)
 			{
-				$validationService->applyLicenseData($expiredUser);
+				if ($validationService->isValid())
+				{
+					$validationService->applyLicenseData($expiredUser);
+				}
+				else if ($validationService->isApiFailure())
+				{
+					// try again in 30 minutes
+					$resume = $this->resume();
+					$resume->continueDate = \XF::$time + 30 * 60;
+
+					return $resume;
+				}
+				else
+				{
+					$expiredUser->expireValidation();
+				}
 			}
 			else
 			{
 				$expiredUser->expireValidation();
 			}
+
+			$this->data['start'] = $expiredUser->user_id;
 
 			if (microtime(true) - $startTime >= $maxRunTime)
 			{
