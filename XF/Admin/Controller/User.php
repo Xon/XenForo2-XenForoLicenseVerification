@@ -18,7 +18,7 @@ class User extends XFCP_User
 			{
 				$removeCustomerToken = $this->filter('liamw_xenforolicenseverification_remove_license_customer_token', 'bool');
 
-				$user->expireValidation($user, $removeCustomerToken);
+				$user->expireValidation($removeCustomerToken);
 			}
 		});
 
