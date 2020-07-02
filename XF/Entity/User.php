@@ -24,6 +24,8 @@ class User extends XFCP_User
 			$removeCustomerToken = !\XF::options()->liamw_xenforolicenseverification_maintain_customer;
 		}
 
+		\XF::db()->beginTransaction();
+
 		$this->XenForoLicense->deleteLicenseData($removeCustomerToken);
 
 		if ($this->app()->options()->liamw_xenforolicenseverification_licensed_primary)
@@ -36,6 +38,8 @@ class User extends XFCP_User
 		$userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
 		$userGroupChangeService->removeUserGroupChange($this->user_id, 'xfLicenseValid');
 		$userGroupChangeService->removeUserGroupChange($this->user_id, 'xfLicenseTransferable');
+
+		\XF::db()->commit();
 
 		if ($sendAlert)
 		{
