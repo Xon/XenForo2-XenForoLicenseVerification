@@ -31,7 +31,7 @@ class User extends XFCP_User
 		if ($this->app()->options()->liamw_xenforolicenseverification_licensed_primary)
 		{
 			$this->user_group_id = $this::GROUP_REG;
-			$this->saveIfChanged();
+			$this->saveIfChanged($saved, true, false);
 		}
 
 		/** @var \XF\Service\User\UserGroupChange $userGroupChangeService */

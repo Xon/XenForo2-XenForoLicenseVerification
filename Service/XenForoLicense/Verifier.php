@@ -170,14 +170,16 @@ class Verifier extends AbstractService
 
 		if ($this->options['licensedUserGroup']['setAsPrimary'] !== true && $this->options['licensedUserGroup']['id'])
 		{
-			\XF::app()->service('XF:User\UserGroupChange')
-				->addUserGroupChange($user->user_id, 'xfLicenseValid', $this->options['licensedUserGroup']['id']);
+			/** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
+			$userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+			$userGroupChangeService->addUserGroupChange($user->user_id, 'xfLicenseValid', $this->options['licensedUserGroup']['id']);
 		}
 
 		if ($this->options['transferableUserGroup'] && $this->api->can_transfer)
 		{
-			\XF::app()->service('XF:User\UserGroupChange')
-				->addUserGroupChange($user->user_id, 'xfLicenseTransferable', $this->options['transferableUserGroup']);
+			/** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
+			$userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+			$userGroupChangeService->addUserGroupChange($user->user_id, 'xfLicenseTransferable', $this->options['transferableUserGroup']);
 		}
 
 		$user->save(true, false);
