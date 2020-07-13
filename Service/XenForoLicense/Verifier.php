@@ -124,7 +124,7 @@ class Verifier extends AbstractService
 		$responseCode = $this->api->getResponseCode();
 		if ($responseCode >= 500)
 		{
-			$this->apiFailure = true;
+			$this->setApiFailure(true);
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_error_occurred_while_attempting_to_verify_your_xenforo_license');
 
 			return false;
