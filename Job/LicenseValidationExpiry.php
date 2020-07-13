@@ -73,8 +73,10 @@ class LicenseValidationExpiry extends AbstractJob
 		}
 
 		$this->data['batch'] = $this->calculateOptimalBatch($this->data['batch'], $done, $startTime, $maxRunTime, 50);
+		$resume = $this->resume();
+		$resume->continueDate = \XF::$time + 10;
 
-		return $this->resume();
+		return $resume;
 	}
 
 	public function getStatusMessage()
