@@ -108,10 +108,27 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade3040002Step1(): void
+	public function upgrade3040002Step2(): void
 	{
 		$this->installStep1();
 	}
+
+    public function upgrade3040003Step2()
+    {
+        $userIds = $this->db()->fetchAllColumn('
+            SELECT DISTINCT user_id 
+            FROM xf_user_group_change
+            WHERE change_key = \'xiLicenseValidationValidated\' or change_key like \'liam_xenLicenseValidation_%\' ');
+
+        foreach ($userIds as $userId)
+        {
+            /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
+            $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+            $userGroupChangeService->removeUserGroupChange($userId, 'xiLicenseValidationValidated');
+            $userGroupChangeService->removeUserGroupChange($userId, 'liam_xenLicenseValidation_licensedChange');
+            $userGroupChangeService->removeUserGroupChange($userId, 'liam_xenLicenseValidation_transferableChange');
+        }
+    }
 
 	public function uninstallStep1()
 	{
@@ -122,6 +139,22 @@ class Setup extends AbstractSetup
 			$sm->dropTable($tableName);
 		}
 	}
+
+    public function uninstallStep2()
+    {
+        $userIds = $this->db()->fetchAllColumn('
+            SELECT DISTINCT user_id 
+            FROM xf_user_group_change
+            WHERE change_key IN (\'xfLicenseValid\', \'xfLicenseTransferable\')');
+
+        foreach ($userIds as $userId)
+        {
+            /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
+            $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+            $userGroupChangeService->removeUserGroupChange($userId, 'xfLicenseValid');
+            $userGroupChangeService->removeUserGroupChange($userId, 'xfLicenseTransferable');
+        }
+    }
 
 	public function postInstall(array &$stateChanges): void
 	{
