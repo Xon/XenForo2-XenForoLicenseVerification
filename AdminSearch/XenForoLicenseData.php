@@ -42,9 +42,22 @@ class XenForoLicenseData extends AbstractHandler
 		/** @var \XF\Mvc\Router $router */
 		$router = $this->app->container('router.admin');
 
+		if (!$record->valid)
+		{
+			$status = \XF::phrase('(liamw_xenforolicenseverification_xenforo_license_is_invalid)');
+		}
+		else if ($record->validation_date)
+		{
+			$status = \XF::phrase('(valid)');
+		}
+		else
+		{
+			$status = \XF::phrase('(liamw_xenforolicenseverification_xenforo_license_not_verified)');
+		}
+
 		return [
 			'link'  => $router->buildLink('users/edit', $record->User),
-			'title' => $record->domain,
+			'title' => $record->domain . ' ' . $status,
 			'extra' => $record->User->username
 		];
 	}
