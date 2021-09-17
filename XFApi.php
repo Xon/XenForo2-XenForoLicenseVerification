@@ -35,7 +35,7 @@ class XFApi
 		$this->httpClient = $httpClient;
 
 		$this->setToken($token);
-		$this->setToken($domain);
+		$this->setDomain($domain);
 	}
 
 	public function setToken(string $token)
