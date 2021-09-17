@@ -74,7 +74,11 @@ class XFApi
 				\XF::logError('Error validating '.$this->token . ' - '. $this->domain . ' - Non-json result');
 			}
 		}
-		catch (ServerException | ClientException $e)
+		catch (ClientException $e)
+		{
+			$this->responseCode = $e->getCode();
+		}
+		catch (ServerException $e)
 		{
 			\XF::logException($e, false, 'Error validating '.$this->token . ' - '. $this->domain);
 			$this->responseCode = $e->getCode();
