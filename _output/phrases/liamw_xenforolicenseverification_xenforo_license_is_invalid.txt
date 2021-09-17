@@ -1,1 +1,1 @@
-<color=red>Invalid</color>
+<span class="formRow-error">Invalid</span>

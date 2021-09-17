@@ -57,7 +57,7 @@ class XenForoLicenseData extends AbstractHandler
 
 		return [
 			'link'  => $router->buildLink('users/edit', $record->User),
-			'title' => $record->domain . ' ' . $status,
+			'title' => new \XF\PreEscaped(\XF::escapeString($record->domain) . ' ' . $status),
 			'extra' => $record->User->username
 		];
 	}
