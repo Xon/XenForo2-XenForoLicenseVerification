@@ -3,7 +3,6 @@
 namespace LiamW\XenForoLicenseVerification;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 
@@ -64,10 +63,20 @@ class XFApi
 			$this->rawResponse = $this->httpClient->post(self::VALIDATION_URL, $requestOptions);
 
 			$this->responseCode = $this->rawResponse->getStatusCode();
-			$this->responseJson = \json_decode($this->rawResponse->getBody(), true) ?: [];
+			$json = \json_decode($this->rawResponse->getBody(), true);
+			if (\is_array($json))
+			{
+				$this->responseJson = $json;
+			}
+			else
+			{
+				$this->responseCode = 500;
+				\XF::logError('Error validating '.$this->token . ' - '. $this->domain . ' - Non-json result');
+			}
 		}
 		catch (ServerException | ClientException $e)
 		{
+			\XF::logException($e, false, 'Error validating '.$this->token . ' - '. $this->domain);
 			$this->responseCode = $e->getCode();
 		}
 	}
