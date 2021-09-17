@@ -21,10 +21,12 @@ class LicenseValidationExpiry extends AbstractJob
 					->options()->liamw_xenforolicenseverification_cutoff * 24 * 60 * 60);
 
 		$this->data['batch'] = \min(\max($this->data['batch'], 1), self::MAX_BATCH_SIZE);
-		$expiredUsers = \XF::app()->finder('XF:User')->where('user_id', '>', $this->data['start'])
-			->where('XenForoLicense.validation_date', '<=', $validationCutoff)
-			->order('user_id')
-			->fetch($this->data['batch']);
+		$expiredUsers = \XF::app()->finder('XF:User')
+								  ->where('XenForoLicense.user_id', '>', $this->data['start'])
+								  ->where('XenForoLicense.validation_date', '<=', $validationCutoff)
+								  ->where('XenForoLicense.valid', '=', 1)
+								  ->order('XenForoLicense.user_id')
+								  ->fetch($this->data['batch']);
 
 		if (!$expiredUsers->count())
 		{
