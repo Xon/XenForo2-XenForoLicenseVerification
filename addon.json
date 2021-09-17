@@ -2,7 +2,7 @@
     "legacy_addon_id": "liam_licensecheck",
     "title": "XenForo License Verification",
     "description": "Verify the XenForo License of board members.",
-    "version_id": 3040000,
+    "version_id": 3040001,
     "version_string": "3.4.0",
     "dev": "Atelier Aphelion",
     "dev_url": "https://atelieraphelion.com/",
@@ -13,7 +13,8 @@
     },
     "require": {
         "php": ["7.2.0", "PHP 7.2.0+"],
-        "XF": [2020070, "XenForo 2.2.0+"]
+        "XF": [2020070, "XenForo 2.2.0+"],
+        "SV/StandardLib": [1010000,"Standard Library by Xon v1.1.0+"]
     },
     "icon": "logo.png"
 }
