@@ -57,7 +57,7 @@ class Account extends XFCP_Account
 	{
 		/** @var \LiamW\XenForoLicenseVerification\XF\Entity\User $user */
 		$user = \XF::visitor();
-		if ($user->user_state != 'valid' || !$user->XenForoLicense)
+		if ($user->user_state !== 'valid' || !$user->XenForoLicense)
 		{
 			return $this->redirect($this->buildLink('account/xenforo-license'));
 		}

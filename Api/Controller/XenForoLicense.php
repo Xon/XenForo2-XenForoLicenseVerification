@@ -50,7 +50,7 @@ class XenForoLicense extends AbstractController
 
 		$user = $this->assertViewableUser($params->get('user_id'));
 
-		if ($user->user_id != \XF::visitor()->user_id)
+		if ($user->user_id && $user->user_id !== \XF::visitor()->user_id)
 		{
 			$this->noPermission();
 		}

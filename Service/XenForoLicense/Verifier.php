@@ -60,7 +60,7 @@ class Verifier extends AbstractService
 		$class = $this->app->extendClass(XFApi::class);
 		$this->api = new $class($this->app->http()->client(), $this->token, $this->domain);
 
-		if (!$this->token || strlen($this->token) != 32 || !preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $this->token))
+		if (!$this->token || strlen($this->token) !== 32 || !preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $this->token))
 		{
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}
