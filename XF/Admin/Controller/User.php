@@ -6,7 +6,10 @@ use XF\Mvc\FormAction;
 
 class User extends XFCP_User
 {
-	/** @noinspection PhpUnusedParameterInspection */
+	/**
+	 * @noinspection PhpUnusedParameterInspection
+	 * @noinspection PhpMissingReturnTypeInspection
+	 */
 	protected function userSaveProcess(\XF\Entity\User $user)
 	{
 		$formAction = parent::userSaveProcess($user);

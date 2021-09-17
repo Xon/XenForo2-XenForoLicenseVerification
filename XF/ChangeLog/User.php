@@ -1,4 +1,8 @@
 <?php
+/**
+ * @noinspection PhpMissingReturnTypeInspection
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+ */
 
 namespace LiamW\XenForoLicenseVerification\XF\ChangeLog;
 

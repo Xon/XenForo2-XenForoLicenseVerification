@@ -28,6 +28,7 @@ class Verifier extends AbstractService
 
 	protected $apiFailure = false;
 	protected $errors = [];
+	/** @var ?bool */
 	protected $isValid = null;
 
 	public function __construct(\XF\App $app, $token, $domain = null, array $options = [])
@@ -39,18 +40,12 @@ class Verifier extends AbstractService
 		parent::__construct($app);
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isApiFailure()
+	public function isApiFailure(): bool
 	{
 		return $this->apiFailure;
 	}
 
-	/**
-	 * @param bool $apiFailure
-	 */
-	public function setApiFailure($apiFailure)
+	public function setApiFailure(bool $apiFailure)
 	{
 		$this->apiFailure = $apiFailure;
 	}
@@ -76,36 +71,36 @@ class Verifier extends AbstractService
 	{
 		if ($this->options['uniqueChecks']['customer'] === null)
 		{
-			$this->options['uniqueChecks']['customer'] = $this->app->options()->liamw_xenforolicenseverification_unique_customer;
+			$this->options['uniqueChecks']['customer'] = $this->app->options()->liamw_xenforolicenseverification_unique_customer ?? false;
 		}
 
 		if ($this->options['uniqueChecks']['license'] === null)
 		{
-			$this->options['uniqueChecks']['license'] = $this->app->options()->liamw_xenforolicenseverification_unique_license;
+			$this->options['uniqueChecks']['license'] = $this->app->options()->liamw_xenforolicenseverification_unique_license ?? false;
 		}
 
 		if ($this->options['checkDomain'] === null)
 		{
-			$this->options['checkDomain'] = $this->app->options()->liamw_xenforolicenseverification_check_domain;
+			$this->options['checkDomain'] = $this->app->options()->liamw_xenforolicenseverification_check_domain ?? true;
 		}
 
 		if ($this->options['licensedUserGroup']['id'] === null)
 		{
-			$this->options['licensedUserGroup']['id'] = $this->app->options()->liamw_xenforolicenseverification_licensed_group;
+			$this->options['licensedUserGroup']['id'] = $this->app->options()->liamw_xenforolicenseverification_licensed_group ?? 0;
 		}
 
 		if ($this->options['licensedUserGroup']['setAsPrimary'] === null)
 		{
-			$this->options['licensedUserGroup']['setAsPrimary'] = (bool)$this->app->options()->liamw_xenforolicenseverification_licensed_primary;
+			$this->options['licensedUserGroup']['setAsPrimary'] = (bool)($this->app->options()->liamw_xenforolicenseverification_licensed_primary ?? 0);
 		}
 
 		if ($this->options['transferableUserGroup'] === null)
 		{
-			$this->options['transferableUserGroup'] = $this->app->options()->liamw_xenforolicenseverification_transfer_group;
+			$this->options['transferableUserGroup'] = $this->app->options()->liamw_xenforolicenseverification_transfer_group ?? 0;
 		}
 	}
 
-	public function isValid(&$error = '')
+	public function isValid(&$error = ''): bool
 	{
 		if ($this->errors)
 		{
@@ -130,7 +125,7 @@ class Verifier extends AbstractService
 			return false;
 		}
 
-		if ($responseCode != 200)
+		if ($responseCode !== 200)
 		{
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}
@@ -147,8 +142,10 @@ class Verifier extends AbstractService
 
 		if ($this->options['uniqueChecks']['license'])
 		{
-			if ($this->finder('XF:User')->where('user_id', '!=', \XF::visitor()->user_id)
-					->where('XenForoLicense.license_token', $this->api->license_token)->total() > 0)
+			if ($this->finder('XF:User')
+					 ->where('user_id', '!=', \XF::visitor()->user_id)
+					 ->where('XenForoLicense.license_token', $this->api->license_token)
+					 ->total() > 0)
 			{
 				$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_license_token_not_unique');
 			}
@@ -156,8 +153,10 @@ class Verifier extends AbstractService
 
 		if ($this->options['uniqueChecks']['customer'])
 		{
-			if ($this->finder('XF:User')->where('user_id', '!=', \XF::visitor()->user_id)
-					->where('XenForoLicense.customer_token', $this->api->customer_token)->total() > 0)
+			if ($this->finder('XF:User')
+					 ->where('user_id', '!=', \XF::visitor()->user_id)
+					 ->where('XenForoLicense.customer_token', $this->api->customer_token)
+					 ->total() > 0)
 			{
 				$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_customer_token_not_unique');
 			}

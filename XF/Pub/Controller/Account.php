@@ -2,11 +2,13 @@
 
 namespace LiamW\XenForoLicenseVerification\XF\Pub\Controller;
 
+use XF\Mvc\Reply\AbstractReply;
+
 class Account extends XFCP_Account
 {
-	public function actionXenForoLicense()
+	public function actionXenForoLicense(): AbstractReply
 	{
-		if (\XF::visitor()->user_state != 'valid')
+		if (\XF::visitor()->user_state !== 'valid')
 		{
 			return $this->noPermission();
 		}
@@ -16,9 +18,9 @@ class Account extends XFCP_Account
 		return $this->addAccountWrapperParams($view, 'liamw_xenforo_license');
 	}
 
-	public function actionXenForoLicenseUpdate()
+	public function actionXenForoLicenseUpdate(): AbstractReply
 	{
-		if (\XF::visitor()->user_state != 'valid')
+		if (\XF::visitor()->user_state !== 'valid')
 		{
 			return $this->redirect($this->buildLink('account/xenforo-license'));
 		}
@@ -27,7 +29,7 @@ class Account extends XFCP_Account
 		{
 			$input = $this->filter([
 				'xenforo_license_verification' => [
-					'token' => 'str',
+					'token'  => 'str',
 					'domain' => 'str'
 				]
 			]);
@@ -42,20 +44,16 @@ class Account extends XFCP_Account
 
 				return $this->redirect($this->buildLink('account/xenforo-license'));
 			}
-			else
-			{
-				return $this->error($error);
-			}
-		}
-		else
-		{
-			$view = $this->view('LiamW\XenForoLicenseVerification:Account\XenForoLicense', 'liamw_xenforolicenseverification_update_license');
 
-			return $this->addAccountWrapperParams($view, 'liamw_xenforo_license');
+			return $this->error($error);
 		}
+
+		$view = $this->view('LiamW\XenForoLicenseVerification:Account\XenForoLicense', 'liamw_xenforolicenseverification_update_license');
+
+		return $this->addAccountWrapperParams($view, 'liamw_xenforo_license');
 	}
 
-	public function actionXenForoLicenseRemove()
+	public function actionXenForoLicenseRemove(): AbstractReply
 	{
 		/** @var \LiamW\XenForoLicenseVerification\XF\Entity\User $user */
 		$user = \XF::visitor();
@@ -70,9 +68,7 @@ class Account extends XFCP_Account
 
 			return $this->redirect($this->buildLink('account/xenforo-license'));
 		}
-		else
-		{
-			return $this->view('LiamW\XenForoLicenseVerification:Account\XenForoLicense\Remove', 'liamw_xenforolicenseverification_remove_license');
-		}
+
+		return $this->view('LiamW\XenForoLicenseVerification:Account\XenForoLicense\Remove', 'liamw_xenforolicenseverification_remove_license');
 	}
 }

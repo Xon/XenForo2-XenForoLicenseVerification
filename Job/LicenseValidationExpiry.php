@@ -11,7 +11,7 @@ class LicenseValidationExpiry extends AbstractJob
 		'batch' => 50
 	];
 
-	public function run($maxRunTime)
+	public function run($maxRunTime): \XF\Job\JobResult
 	{
 		$startTime = microtime(true);
 
@@ -28,7 +28,7 @@ class LicenseValidationExpiry extends AbstractJob
 			return $this->complete();
 		}
 
-		$recheck = \XF::app()->options()->liamw_xenforolicenseverification_auto_recheck;
+		$recheck = \XF::app()->options()->liamw_xenforolicenseverification_auto_recheck ?? false;
 
 		$done = 0;
 
@@ -79,19 +79,19 @@ class LicenseValidationExpiry extends AbstractJob
 		return $resume;
 	}
 
-	public function getStatusMessage()
+	public function getStatusMessage(): string
 	{
 		$actionPhrase = \XF::phrase('liamw_xenforolicenseverification_updating_xenforo_license_verifications');
 
 		return sprintf('%s... (%s)', $actionPhrase, $this->data['start']);
 	}
 
-	public function canCancel()
+	public function canCancel(): bool
 	{
 		return false;
 	}
 
-	public function canTriggerByChoice()
+	public function canTriggerByChoice(): bool
 	{
 		return false;
 	}

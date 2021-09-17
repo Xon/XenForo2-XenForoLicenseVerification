@@ -7,12 +7,12 @@ use XF\Mvc\Entity\Entity;
 
 class XenForoLicenseData extends AbstractHandler
 {
-	public function getDisplayOrder()
+	public function getDisplayOrder(): int
 	{
 		return 30;
 	}
 
-	public function search($text, $limit, array $previousMatchIds = [])
+	public function search($text, $limit, array $previousMatchIds = []): \XF\Mvc\Entity\AbstractCollection
 	{
 		$finder = $this->app->finder('LiamW\XenForoLicenseVerification:XenForoLicenseData');
 
@@ -36,7 +36,7 @@ class XenForoLicenseData extends AbstractHandler
 		return $finder->fetch();
 	}
 
-	public function getTemplateData(Entity $record)
+	public function getTemplateData(Entity $record): array
 	{
 		/** @var \LiamW\XenForoLicenseVerification\Entity\XenForoLicenseData $record */
 		/** @var \XF\Mvc\Router $router */
@@ -49,7 +49,7 @@ class XenForoLicenseData extends AbstractHandler
 		];
 	}
 
-	public function isSearchable()
+	public function isSearchable(): bool
 	{
 		return \XF::visitor()->hasAdminPermission('user');
 	}

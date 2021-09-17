@@ -23,9 +23,9 @@ use XF\Mvc\Entity\Structure;
  */
 class XenForoLicenseData extends Entity
 {
-	public function deleteLicenseData($removeCustomerToken = false)
+	public function deleteLicenseData(bool $removeCustomerToken = false): void
 	{
-		if (!\XF::options()->liamw_xenforolicenseverification_maintain_customer || $removeCustomerToken)
+		if ($removeCustomerToken)
 		{
 			$this->delete();
 		}
@@ -41,7 +41,7 @@ class XenForoLicenseData extends Entity
 		}
 	}
 
-	public static function getStructure(Structure $structure)
+	public static function getStructure(Structure $structure): Structure
 	{
 		$structure->shortName = 'LiamW\XenForoLicenseVerification:XenForoLicenseData';
 

@@ -2,8 +2,6 @@
 
 namespace LiamW\XenForoLicenseVerification;
 
-use XF\Mvc\Entity\Entity;
-
 class Listener
 {
 	/**
@@ -11,7 +9,7 @@ class Listener
 	 * @param array                          $updates
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public static function userChange(\XF\Service\User\ContentChange $changeService, array &$updates)
+	public static function userChange(\XF\Service\User\ContentChange $changeService, array &$updates): void
 	{
 		$updates['xf_liamw_xenforo_license_data'] = ['user_id', 'emptyable' => false];
 	}

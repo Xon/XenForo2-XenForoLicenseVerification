@@ -3,6 +3,7 @@
 namespace LiamW\XenForoLicenseVerification;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 
@@ -19,38 +20,33 @@ class XFApi
 {
 	const VALIDATION_URL = "https://xenforo.com/customer-api/license-lookup.json";
 
+	/** @var Client */
 	protected $httpClient;
-	protected $rawResponse = '';
+	protected $rawResponse  = '';
 	protected $responseCode = 500;
 	protected $responseJson = [];
 
+	/** @var string */
 	protected $token;
+	/** @var string|null */
 	protected $domain;
 
-	public function __construct(Client $httpClient, $token, $domain = null)
+	public function __construct(Client $httpClient, string $token, ?string $domain)
 	{
 		$this->httpClient = $httpClient;
 
-		$this->token = $token;
-		$this->domain = $domain;
+		$this->setToken($token);
+		$this->setToken($domain);
 	}
 
-	/**
-	 * @param string $token
-	 */
-	public function setToken($token)
+	public function setToken(string $token)
 	{
 		$this->token = $token;
 	}
 
-	/**
-	 * Sets the domain to pass to the XenForo license API. If set to null, no domain will be passed.
-	 *
-	 * @param string|null $domain
-	 */
-	public function setDomain($domain)
+	public function setDomain(?string $domain)
 	{
-		$this->domain = $domain;
+		$this->domain = $domain ?? '';
 	}
 
 	public function validate()
@@ -58,49 +54,32 @@ class XFApi
 		$this->responseJson = [];
 		try
 		{
-			if ($this->isGuzzle6())
-			{
-				$requestOptions = [
-					'form_params' => [
-						'token' => $this->token,
-						'domain' => $this->domain ?: ''
-					]
-				];
-			}
-			else
-			{
-				$requestOptions = [
-					'body' => [
-						'token' => $this->token,
-						'domain' => $this->domain ?: ''
-					]
-				];
-			}
+			$requestOptions = [
+				'form_params' => [
+					'token'  => $this->token,
+					'domain' => $this->domain,
+				]
+			];
 
 			$this->rawResponse = $this->httpClient->post(self::VALIDATION_URL, $requestOptions);
 
 			$this->responseCode = $this->rawResponse->getStatusCode();
 			$this->responseJson = \json_decode($this->rawResponse->getBody(), true) ?: [];
-		} catch (ClientException $e)
-		{
-			$this->responseCode = $e->getCode();
-		} catch (ServerException $e)
+		}
+		catch (ServerException | ClientException $e)
 		{
 			$this->responseCode = $e->getCode();
 		}
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getResponseCode()
+	public function getResponseCode(): int
 	{
 		return $this->responseCode;
 	}
 
 	final public function __get($name)
 	{
-		return isset($this->responseJson[$name]) ? $this->responseJson[$name] : null;
+		return $this->responseJson[$name] ?? null;
 	}
 
 	final public function __isset($name)
@@ -116,10 +95,5 @@ class XFApi
 	final public function __unset($name)
 	{
 		throw new \BadMethodCallException("Cannot unset values on LicenseValidator");
-	}
-
-	protected function isGuzzle6()
-	{
-		return version_compare(Client::VERSION, '6.0.0', '>=');
 	}
 }

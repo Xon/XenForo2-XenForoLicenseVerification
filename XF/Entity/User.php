@@ -1,4 +1,7 @@
 <?php
+/**
+ * @noinspection PhpMissingReturnTypeInspection
+ */
 
 namespace LiamW\XenForoLicenseVerification\XF\Entity;
 
@@ -15,20 +18,20 @@ class User extends XFCP_User
 {
 	/**
 	 * @param bool|null $removeCustomerToken
-	 * @param bool $sendAlert
+	 * @param bool      $sendAlert
 	 */
-	public function expireValidation($removeCustomerToken = null, $sendAlert = true)
+	public function expireValidation(?bool $removeCustomerToken = null, bool $sendAlert = true): void
 	{
 		if ($removeCustomerToken === null)
 		{
-			$removeCustomerToken = !\XF::options()->liamw_xenforolicenseverification_maintain_customer;
+			$removeCustomerToken = !(\XF::options()->liamw_xenforolicenseverification_maintain_customer ?? true);
 		}
 
 		\XF::db()->beginTransaction();
 
 		$this->XenForoLicense->deleteLicenseData($removeCustomerToken);
 
-		if ($this->app()->options()->liamw_xenforolicenseverification_licensed_primary)
+		if ($this->app()->options()->liamw_xenforolicenseverification_licensed_primary ?? false)
 		{
 			$this->user_group_id = $this::GROUP_REG;
 			$this->saveIfChanged($saved, true, false);

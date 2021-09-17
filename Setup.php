@@ -16,10 +16,9 @@ class Setup extends AbstractSetup
 	use StepRunnerUninstallTrait;
 	use StepRunnerUpgradeTrait;
 
-	public function installStep1()
+	public function installStep1(): void
 	{
-		$this->schemaManager()->createTable('xf_liamw_xenforo_license_data', function(Create $table)
-		{
+		$this->schemaManager()->createTable('xf_liamw_xenforo_license_data', function (Create $table) {
 			$table->addColumn('user_id', 'int')->primaryKey();
 			$table->addColumn('validation_token', 'varchar', 50)->nullable();
 			$table->addColumn('customer_token', 'varchar', 50);
@@ -31,27 +30,24 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade10106Step1()
+	public function upgrade10106Step1(): void
 	{
-		$this->schemaManager()->alterTable('xf_user', function(Alter $table)
-		{
+		$this->schemaManager()->alterTable('xf_user', function (Alter $table) {
 			$table->addColumn('api_customer_token', 'varchar', 32)->nullable();
 		});
 	}
 
-	public function upgrade10202Step1()
+	public function upgrade10202Step1(): void
 	{
-		$this->schemaManager()->alterTable('xf_user', function(Alter $table)
-		{
+		$this->schemaManager()->alterTable('xf_user', function (Alter $table) {
 			$table->addColumn('api_license_token', 'varchar', 32)->nullable();
 			$table->addColumn('api_license_valid', 'bool')->nullable();
 		});
 	}
 
-	public function upgrade20000Step1()
+	public function upgrade20000Step1(): void
 	{
-		$this->schemaManager()->alterTable('xf_user_profile', function(Alter $table)
-		{
+		$this->schemaManager()->alterTable('xf_user_profile', function (Alter $table) {
 			$table->addColumn('xenforo_api_validation_token', 'varchar', 32)->nullable();
 			$table->addColumn('xenforo_api_validation_domain', 'varchar', 255)->nullable();
 			$table->addColumn('xenforo_api_last_check', 'int')->nullable();
@@ -61,8 +57,9 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade20000Step2()
+	public function upgrade20000Step2(): void
 	{
+		/** @noinspection SqlResolve */
 		$this->query("
 			UPDATE
     			xf_user_profile
@@ -88,10 +85,9 @@ class Setup extends AbstractSetup
 		");
 	}
 
-	public function upgrade20000Step3()
+	public function upgrade20000Step3(): void
 	{
-		$this->schemaManager()->alterTable('xf_user', function(Alter $table)
-		{
+		$this->schemaManager()->alterTable('xf_user', function (Alter $table) {
 			$table->dropColumns([
 				'api_key',
 				'api_domain',
@@ -103,10 +99,9 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade3000031Step1()
+	public function upgrade3000031Step1(): void
 	{
-		$this->schemaManager()->createTable('xf_liamw_xenforo_license_data', function(Create $table)
-		{
+		$this->schemaManager()->createTable('xf_liamw_xenforo_license_data', function (Create $table) {
 			$table->addColumn('user_id', 'int')->primaryKey();
 			$table->addColumn('validation_token', 'varchar', 50);
 			$table->addColumn('customer_token', 'varchar', 50);
@@ -118,16 +113,16 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade3000031Step2()
+	public function upgrade3000031Step2(): void
 	{
+		/** @noinspection SqlResolve */
 		$this->db()
-			->query("INSERT INTO xf_liamw_xenforo_license_data(user_id, validation_token, customer_token, license_token, domain, domain_match, can_transfer, validation_date) SELECT user_id, xenforo_api_validation_token, xenforo_api_customer_token, xenforo_api_license_token, xenforo_api_validation_domain, NULL, 0, xenforo_api_last_check FROM xf_user_profile WHERE xenforo_api_validation_token IS NOT NULL");
+			 ->query("INSERT INTO xf_liamw_xenforo_license_data(user_id, validation_token, customer_token, license_token, domain, domain_match, can_transfer, validation_date) SELECT user_id, xenforo_api_validation_token, xenforo_api_customer_token, xenforo_api_license_token, xenforo_api_validation_domain, NULL, 0, xenforo_api_last_check FROM xf_user_profile WHERE xenforo_api_validation_token IS NOT NULL");
 	}
 
-	public function upgrade3000031Step3()
+	public function upgrade3000031Step3(): void
 	{
-		$this->schemaManager()->alterTable('xf_user_profile', function(Alter $table)
-		{
+		$this->schemaManager()->alterTable('xf_user_profile', function (Alter $table) {
 			$table->dropColumns([
 				'xenforo_api_validation_token',
 				'xenforo_api_validation_domain',
@@ -139,10 +134,9 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade3020010Step1()
+	public function upgrade3020010Step1(): void
 	{
-		$this->alterTable('xf_liamw_xenforo_license_data', function(Alter $table)
-		{
+		$this->alterTable('xf_liamw_xenforo_license_data', function (Alter $table) {
 			$table->changeColumn('validation_token')->nullable();
 			$table->changeColumn('license_token')->nullable();
 			$table->changeColumn('can_transfer')->nullable();
@@ -150,22 +144,22 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function uninstallStep1()
+	public function uninstallStep1(): void
 	{
 		$this->schemaManager()->dropTable('xf_liamw_xenforo_license_data');
 	}
 
-	public function postInstall(array &$stateChanges)
+	public function postInstall(array &$stateChanges): void
 	{
 		$this->randomiseCronTime();
 	}
 
-	public function postUpgrade($previousVersion, array &$stateChanges)
+	public function postUpgrade($previousVersion, array &$stateChanges): void
 	{
 		$this->randomiseCronTime();
 	}
 
-	public function onActiveChange($newActive, array &$jobList)
+	public function onActiveChange($newActive, array &$jobList): void
 	{
 		// Only randomise when enabled
 		if ($newActive)
@@ -174,7 +168,7 @@ class Setup extends AbstractSetup
 		}
 	}
 
-	protected function randomiseCronTime()
+	protected function randomiseCronTime(): void
 	{
 		if (\XF::app()->config('development')['enabled'])
 		{

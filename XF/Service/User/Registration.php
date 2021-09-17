@@ -1,4 +1,7 @@
 <?php
+/**
+ * @noinspection PhpMissingReturnTypeInspection
+ */
 
 namespace LiamW\XenForoLicenseVerification\XF\Service\User;
 
@@ -26,7 +29,7 @@ class Registration extends XFCP_Registration
 		$this->verifyXenForoLicense($this->liamw_xenforolicenseverification_xenforo_license_data);
 	}
 
-	protected function verifyXenForoLicense(array $verificationData)
+	protected function verifyXenForoLicense(array $verificationData): void
 	{
 		if ($this->app->options()->liamw_xenforolicenseverification_registration['request'])
 		{

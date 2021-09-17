@@ -12,6 +12,7 @@
         "Contribute on GitHub": "https://github.com/Xon/XenForo2-XenForoLicenseVerification"
     },
     "require": {
+        "php": ["7.2.0", "PHP 7.2.0+"],
         "XF": [
             2010070,
             "XenForo 2.1.0 or above"

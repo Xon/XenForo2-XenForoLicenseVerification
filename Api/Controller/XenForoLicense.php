@@ -3,6 +3,7 @@
 namespace LiamW\XenForoLicenseVerification\Api\Controller;
 
 use XF\Api\Controller\AbstractController;
+use XF\Api\Mvc\Reply\ApiResult;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\ParameterBag;
 
@@ -16,10 +17,10 @@ class XenForoLicense extends AbstractController
 	 * @api-desc  Gets the XenForo license details for the specified user.
 	 * @api-out   XenForoLicense $xenforoLicense
 	 * @param ParameterBag $params
-	 * @return \XF\Api\Mvc\Reply\ApiResult
+	 * @return ApiResult
 	 * @throws \XF\Mvc\Reply\Exception
 	 */
-	public function actionGetXenForoLicense(ParameterBag $params)
+	public function actionGetXenForoLicense(ParameterBag $params): ApiResult
 	{
 		$this->assertApiScopeByRequestMethod('user:xenforo_license');
 
@@ -38,10 +39,10 @@ class XenForoLicense extends AbstractController
 	 * @api-out   true $success
 	 * @api-out   User $user
 	 * @param ParameterBag $params
-	 * @return \XF\Api\Mvc\Reply\ApiResult|\XF\Mvc\Reply\Error
+	 * @return ApiResult|\XF\Mvc\Reply\Error
 	 * @throws \XF\Mvc\Reply\Exception
 	 */
-	public function actionPostXenForoLicense(ParameterBag $params)
+	public function actionPostXenForoLicense(ParameterBag $params): ApiResult
 	{
 		$this->assertApiScopeByRequestMethod('user:xenforo_license');
 
@@ -82,10 +83,10 @@ class XenForoLicense extends AbstractController
 	 * @api-in    bool $remove_customer_token If specified, the customer token will also be removed, regardless of option.
 	 * @api-out   true $success
 	 * @param ParameterBag $params
-	 * @return \XF\Api\Mvc\Reply\ApiResult
+	 * @return ApiResult
 	 * @throws \XF\Mvc\Reply\Exception
 	 */
-	public function actionDeleteXenForoLicense(ParameterBag $params)
+	public function actionDeleteXenForoLicense(ParameterBag $params): ApiResult
 	{
 		$this->assertApiScopeByRequestMethod('user:xenforo_license');
 
@@ -99,15 +100,13 @@ class XenForoLicense extends AbstractController
 	}
 
 	/**
-	 * @param int $id
+	 * @param int   $id
 	 * @param mixed $with
-	 * @param bool $basicProfileOnly
-	 *
+	 * @param bool  $basicProfileOnly
 	 * @return \LiamW\XenForoLicenseVerification\XF\Entity\User
-	 *
 	 * @throws \XF\Mvc\Reply\Exception
 	 */
-	protected function assertViewableUser($id, $with = 'api', $basicProfileOnly = true)
+	protected function assertViewableUser(int $id, array $with = ['api'], bool $basicProfileOnly = true): \LiamW\XenForoLicenseVerification\XF\Entity\User
 	{
 		/** @var \LiamW\XenForoLicenseVerification\XF\Entity\User $user */
 		$user = $this->assertRecordExists('XF:User', $id, $with);
