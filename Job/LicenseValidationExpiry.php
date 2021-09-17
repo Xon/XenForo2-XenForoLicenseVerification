@@ -6,9 +6,11 @@ use XF\Job\AbstractJob;
 
 class LicenseValidationExpiry extends AbstractJob
 {
+	const MAX_BATCH_SIZE = 5;
+
 	protected $defaultData = [
 		'start' => 0,
-		'batch' => 50
+		'batch' => self::MAX_BATCH_SIZE,
 	];
 
 	public function run($maxRunTime): \XF\Job\JobResult
@@ -18,10 +20,11 @@ class LicenseValidationExpiry extends AbstractJob
 		$validationCutoff = \XF::$time - (\XF::app()
 					->options()->liamw_xenforolicenseverification_cutoff * 24 * 60 * 60);
 
+		$this->data['batch'] = \min(\max($this->data['batch'], 1), self::MAX_BATCH_SIZE);
 		$expiredUsers = \XF::app()->finder('XF:User')->where('user_id', '>', $this->data['start'])
 			->where('XenForoLicense.validation_date', '<=', $validationCutoff)
 			->order('user_id')
-			->fetch(min(max($this->data['batch'], 1), 50));
+			->fetch($this->data['batch']);
 
 		if (!$expiredUsers->count())
 		{
@@ -72,9 +75,9 @@ class LicenseValidationExpiry extends AbstractJob
 			}
 		}
 
-		$this->data['batch'] = $this->calculateOptimalBatch($this->data['batch'], $done, $startTime, $maxRunTime, 50);
+		$this->data['batch'] = $this->calculateOptimalBatch($this->data['batch'], $done, $startTime, $maxRunTime, self::MAX_BATCH_SIZE);
 		$resume = $this->resume();
-		$resume->continueDate = \XF::$time + 10;
+		$resume->continueDate = \XF::$time + 5;
 
 		return $resume;
 	}
