@@ -9,46 +9,48 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckLicence extends Command
 {
-	protected function configure()
-	{
-		$this
-			->setName('licence-xf:check')
-			->setDescription('Performs a xenforo licence check')
-			->addArgument(
-				'validation_token',
-				InputArgument::REQUIRED,
-				'The validation token to check'
-			)
-			->addArgument(
-				'domain',
-				InputArgument::OPTIONAL,
-				'Optional domain to check'
-			);
-	}
+    protected function configure()
+    {
+        $this
+            ->setName('licence-xf:check')
+            ->setDescription('Performs a xenforo licence check')
+            ->addArgument(
+                'validation_token',
+                InputArgument::REQUIRED,
+                'The validation token to check'
+            )
+            ->addArgument(
+                'domain',
+                InputArgument::OPTIONAL,
+                'Optional domain to check'
+            );
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output): int
-	{
-		$validationToken = $input->getArgument('validation_token') ?? '';
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $validationToken = $input->getArgument('validation_token') ?? '';
 
-		if (\strlen($validationToken) === 0)
-		{
-			$output->writeln('<error>User has no xenforo licence</error>');
-			return 1;
-		}
+        if (\strlen($validationToken) === 0)
+        {
+            $output->writeln('<error>User has no xenforo licence</error>');
 
-		$domain = $input->getArgument('domain') ?? '';
+            return 1;
+        }
 
-		/** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
-		$validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', null, $validationToken, $domain);
+        $domain = $input->getArgument('domain') ?? '';
 
-		if (!$validationService->isValid($error))
-		{
-			$output->writeln('<error>'.$error.'</error>');
-			return 1;
-		}
+        /** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
+        $validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', null, $validationToken, $domain);
 
-		$output->writeln('Valid licence for; '. $validationToken . ' - ' . $domain);
+        if (!$validationService->isValid($error))
+        {
+            $output->writeln('<error>' . $error . '</error>');
 
-		return 0;
-	}
+            return 1;
+        }
+
+        $output->writeln('Valid licence for; ' . $validationToken . ' - ' . $domain);
+
+        return 0;
+    }
 }

@@ -10,50 +10,53 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckUserLicence extends Command
 {
-	protected function configure()
-	{
-		$this
-			->setName('licence-xf:user-check')
-			->setDescription('Performs a xenforo licence check')
-			->addArgument(
-				'username',
-				InputArgument::REQUIRED,
-				'User (or email of user) to check the XF licence status for'
-			);
-	}
+    protected function configure()
+    {
+        $this
+            ->setName('licence-xf:user-check')
+            ->setDescription('Performs a xenforo licence check')
+            ->addArgument(
+                'username',
+                InputArgument::REQUIRED,
+                'User (or email of user) to check the XF licence status for'
+            );
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output): int
-	{
-		$username = $input->getArgument('username');
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $username = $input->getArgument('username');
 
-		/** @var \XF\Repository\User $userRepo */
-		$userRepo = \XF::repository('XF:User');
-		/** @var ?User $user */
-		$user = $userRepo->getUserByNameOrEmail($username);
-		if ($user === null)
-		{
-			$output->writeln('<error>User not found</error>');
-			return 1;
-		}
+        /** @var \XF\Repository\User $userRepo */
+        $userRepo = \XF::repository('XF:User');
+        /** @var ?User $user */
+        $user = $userRepo->getUserByNameOrEmail($username);
+        if ($user === null)
+        {
+            $output->writeln('<error>User not found</error>');
 
-		$licence = $user->XenForoLicense;
-		if ($licence === null || $licence->validation_token === null)
-		{
-			$output->writeln('<error>User has no xenforo licence</error>');
-			return 1;
-		}
+            return 1;
+        }
 
-		/** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
-		$validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $user, $licence->validation_token, $licence->domain);
+        $licence = $user->XenForoLicense;
+        if ($licence === null || $licence->validation_token === null)
+        {
+            $output->writeln('<error>User has no xenforo licence</error>');
 
-		if (!$validationService->isValid($error))
-		{
-			$output->writeln('<error>'.$error.'</error>');
-			return 1;
-		}
+            return 1;
+        }
 
-		$output->writeln('Valid licence for; '. $user->username . ' - ' . $licence->validation_token . ' - ' . $licence->domain);
+        /** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
+        $validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $user, $licence->validation_token, $licence->domain);
 
-		return 0;
-	}
+        if (!$validationService->isValid($error))
+        {
+            $output->writeln('<error>' . $error . '</error>');
+
+            return 1;
+        }
+
+        $output->writeln('Valid licence for; ' . $user->username . ' - ' . $licence->validation_token . ' - ' . $licence->domain);
+
+        return 0;
+    }
 }

@@ -57,7 +57,7 @@ class XenForoLicense extends AbstractController
 
 		$input = $this->filter([
 			'xenforo_license_verification' => [
-				'token' => 'str',
+				'token'  => 'str',
 				'domain' => 'str'
 			]
 		]);
