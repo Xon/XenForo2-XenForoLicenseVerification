@@ -2,6 +2,7 @@
 
 namespace LiamW\XenForoLicenseVerification\Service\XenForoLicense;
 
+use LiamW\XenForoLicenseVerification\Entity\XenForoLicenseData;
 use LiamW\XenForoLicenseVerification\XFApi;
 use XF\Entity\User;
 use XF\Service\AbstractService;
@@ -176,16 +177,16 @@ class Verifier extends AbstractService
 	{
 		\XF::db()->beginTransaction();
 
+		/** @var XenForoLicenseData $licenseData */
 		$licenseData = $user->getRelationOrDefault('XenForoLicense');
-		$licenseData->bulkSet([
-			'validation_token' => $this->api->validation_token,
-			'customer_token' => $this->api->customer_token,
-			'license_token' => $this->api->license_token,
-			'can_transfer' => $this->api->can_transfer,
-			'domain' => $this->api->test_domain,
-			'domain_match' => $this->api->domain_match,
-			'validation_date' => \XF::$time
-		]);
+		$licenseData->valid = true;
+		$licenseData->validation_token = $this->api->validation_token;
+		$licenseData->customer_token = $this->api->customer_token;
+		$licenseData->license_token = $this->api->license_token;
+		$licenseData->can_transfer = $this->api->can_transfer;
+		$licenseData->domain = $this->api->test_domain;
+		$licenseData->domain_match = $this->api->domain_match;
+		$licenseData->validation_date = \XF::$time;
 
 		if ($this->options['licensedUserGroup']['setAsPrimary'] === true && $this->options['licensedUserGroup']['id'])
 		{
