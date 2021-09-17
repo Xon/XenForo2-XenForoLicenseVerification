@@ -1,7 +1,7 @@
 MIT License
 
 Copyright (c) 2017-2020 LW Addons
-Copyright (c) 2020 Atelier Aphelion
+Copyright (c) 2020-2012 Atelier Aphelion
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
