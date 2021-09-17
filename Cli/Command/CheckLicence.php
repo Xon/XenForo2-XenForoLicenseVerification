@@ -47,6 +47,8 @@ class CheckLicence extends Command
 			return 1;
 		}
 
+		$output->writeln('Valid licence for; '. $validationToken . ' - ' . $domain);
+
 		return 0;
 	}
 }

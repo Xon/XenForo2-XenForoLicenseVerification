@@ -52,6 +52,8 @@ class CheckUserLicence extends Command
 			return 1;
 		}
 
+		$output->writeln('Valid licence for; '. $user->username . ' - ' . $licence->validation_token . ' - ' . $licence->domain);
+
 		return 0;
 	}
 }
