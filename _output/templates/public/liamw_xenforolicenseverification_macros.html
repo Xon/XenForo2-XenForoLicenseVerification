@@ -6,7 +6,7 @@
 		rowtype="{{ $removeLink ? 'button' : null }}">
         <xf:if is="$showInvalid">
             {{ phrase('liamw_xenforolicenseverification_xenforo_license_is_invalid') }}
-        <xf:elseif is="$user.XenForoLicense.validation_date" />
+        <xf:elseif is="$user.XenForoLicense.validation_date && $user.XenForoLicense.valid" />
             {{ phrase('valid') }}
         <xf:else />
             {{ phrase('liamw_xenforolicenseverification_xenforo_license_not_verified') }}
@@ -97,7 +97,7 @@
 		explain="{$tokenExplain}"
 		hint="{$tokenHint}"/>
 
-	<xf:if is="{$xf.options.liamw_xenforolicenseverification_check_domain}">
+	<xf:if is="$xf.options.liamw_xenforolicenseverification_check_domain">
 		<xf:if is="$context === 'registration'">
 			<xf:set var="$domainHint"
 				value="{{ $xf.options.liamw_xenforolicenseverification_registration.require ? phrase('required') : '' }}"/>

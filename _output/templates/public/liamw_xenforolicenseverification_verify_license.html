@@ -3,7 +3,7 @@
 
 <xf:wrap template="account_wrapper"/>
 
-<xf:if is="{$xf.visitor.XenForoLicense.validation_date}">
+<xf:if is="$xf.visitor.XenForoLicense.validation_date && $xf.visitor.XenForoLicense.valid">
 	<div class="block">
 		<div class="block-container">
 			<div class="block-body">
