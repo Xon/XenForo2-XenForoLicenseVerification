@@ -108,17 +108,18 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade3040002Step2(): void
+	public function upgrade3040004Step1(): void
 	{
 		$this->installStep1();
 	}
 
-    public function upgrade3040003Step2()
+    public function upgrade3040004Step2()
     {
         $userIds = $this->db()->fetchAllColumn('
             SELECT DISTINCT user_id 
             FROM xf_user_group_change
-            WHERE change_key = \'xiLicenseValidationValidated\' or change_key like \'liam_xenLicenseValidation_%\' ');
+            WHERE change_key = \'xiLicenseValidationValidated\' or change_key like \'liam_xenLicenseValidation_%\' 
+        ');
 
         foreach ($userIds as $userId)
         {
