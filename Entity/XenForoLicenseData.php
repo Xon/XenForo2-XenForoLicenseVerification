@@ -17,6 +17,7 @@ use XF\Mvc\Entity\Structure;
  * @property bool|null domain_match
  * @property bool can_transfer
  * @property int validation_date
+ * @property bool valid
  *
  * RELATIONS
  * @property User User
@@ -31,12 +32,7 @@ class XenForoLicenseData extends Entity
 		}
 		else
 		{
-			$this->validation_token = null;
-			$this->license_token = null;
-			$this->domain = null;
-			$this->domain_match = null;
-			$this->can_transfer = null;
-			$this->validation_date = null;
+			$this->valid = false;
 			$this->save();
 		}
 	}
@@ -99,7 +95,13 @@ class XenForoLicenseData extends Entity
 				'default' => \XF::$time,
 				'nullable' => true,
 				'api' => true
-			]
+			],
+			'valid' =>[
+				'type' => self::BOOL,
+				'required' => false,
+				'default' => true,
+				'api' => true
+			],
 		];
 		$structure->relations = [
 			'User' => [

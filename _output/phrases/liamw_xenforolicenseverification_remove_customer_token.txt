@@ -1,1 +1,1 @@
-Remove customer token
+Remove custom and licence information

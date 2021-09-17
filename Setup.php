@@ -108,7 +108,7 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade3040001Step1(): void
+	public function upgrade3040002Step1(): void
 	{
 		$this->installStep1();
 	}
@@ -176,6 +176,7 @@ class Setup extends AbstractSetup
 				$this->addOrChangeColumn($table,'domain_match', 'bool')->nullable();
 				$this->addOrChangeColumn($table,'can_transfer', 'bool')->nullable();
 				$this->addOrChangeColumn($table,'validation_date', 'int')->nullable();
+				$this->addOrChangeColumn($table,'valid', 'tinyint')->setDefault(1);
 			},
 		];
 	}

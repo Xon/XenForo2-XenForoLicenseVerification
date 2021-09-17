@@ -1,10 +1,16 @@
 <xf:macro name="liamw_xenforolicense_license_detail_fields" arg-user="!"
 	arg-updateLink="{{ null }}" arg-removeLink="{{ null }}" arg-context="account">
+    <xf:set var="$showInvalid" value="{{ $context === 'admin' && !$user.XenForoLicense.valid }}"/>
 
 	<xf:formrow label="{{ phrase('liamw_xenforolicenseverification_license_status') }}"
 		rowtype="{{ $removeLink ? 'button' : null }}">
-		{{ $user.XenForoLicense.validation_date ? phrase('valid') :
-		phrase('liamw_xenforolicenseverification_xenforo_license_not_verified') }}
+        <xf:if is="$showInvalid">
+            {{ phrase('liamw_xenforolicenseverification_xenforo_license_is_invalid') }}
+        <xf:elseif is="$user.XenForoLicense.validation_date" />
+            {{ phrase('valid') }}
+        <xf:else />
+            {{ phrase('liamw_xenforolicenseverification_xenforo_license_not_verified') }}
+        </xf:if>
 
 		<xf:if is="$user.XenForoLicense.validation_date AND $removeLink">
 			<xf:button href="{$removeLink}" class="button--link" overlay="true">
@@ -13,7 +19,7 @@
 		</xf:if>
 	</xf:formrow>
 
-	<xf:if is="$user.XenForoLicense.validation_date">
+	<xf:if is="$user.XenForoLicense.validation_date || $showInvalid">
 		<xf:if is="$context === 'account'">
 			<xf:set var="$validationTokenExplain">{{ phrase('liamw_xenforolicenseverification_validation_token_explain_value') }}</xf:set>
 		<xf:elseif is="$context === 'admin'"/>

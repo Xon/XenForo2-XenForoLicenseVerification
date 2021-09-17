@@ -1,0 +1,21 @@
+<h3 class="block-formSectionHeader">
+	<span class="collapseTrigger collapseTrigger--block" data-xf-click="toggle" data-target="< :up:next">
+		<span class="block-formSectionHeader-aligner">{{ phrase('liamw_xenforolicenseverification_xenforo_license_details') }}</span>
+	</span>
+</h3>
+<div class="block-body block-body--collapsible">
+    <xf:macro template="public:liamw_xenforolicenseverification_macros"
+              name="liamw_xenforolicense_license_detail_fields"
+              arg-user="{$user}"
+              arg-context="admin" />
+
+    <xf:if is="$user.XenForoLicense">
+        <xf:checkboxrow>
+            <xf:option name="liamw_xenforolicenseverification_remove_license" value="1" label="{{ phrase('liamw_xenforolicenseverification_remove_license_details_admin') }}">
+                <xf:checkbox>
+                    <xf:option name="liamw_xenforolicenseverification_remove_license_customer_token" value="1" selected="!{$user.XenForoLicense.validation_date}" readonly="{{ !$user.XenForoLicense.validation_date }}">{{ phrase('liamw_xenforolicenseverification_remove_customer_token') }}</xf:option>
+                </xf:checkbox>
+            </xf:option>
+        </xf:checkboxrow>
+    </xf:if>
+</div>
