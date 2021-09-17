@@ -133,8 +133,7 @@ class Verifier extends AbstractService
 		{
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}
-
-		if (!$this->api->is_valid)
+		else if (!$this->api->is_valid)
 		{
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}
