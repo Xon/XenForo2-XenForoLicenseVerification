@@ -38,7 +38,7 @@ class LicenseValidationExpiry extends AbstractJob
 			$done++;
 
 			/** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
-			$validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $expiredUser->XenForoLicense->validation_token, $expiredUser->XenForoLicense->domain);
+			$validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $expiredUser, $expiredUser->XenForoLicense->validation_token, $expiredUser->XenForoLicense->domain);
 
 			if ($recheck && $expiredUser->XenForoLicense->validation_token)
 			{

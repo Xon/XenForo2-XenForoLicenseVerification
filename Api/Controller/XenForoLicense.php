@@ -63,7 +63,7 @@ class XenForoLicense extends AbstractController
 		]);
 
 		/** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $verificationService */
-		$verificationService = $this->service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $input['xenforo_license_verification']['token'], $input['xenforo_license_verification']['domain']);
+		$verificationService = $this->service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $user, $input['xenforo_license_verification']['token'], $input['xenforo_license_verification']['domain']);
 
 		if ($verificationService->isValid($error))
 		{

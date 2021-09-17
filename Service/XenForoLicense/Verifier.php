@@ -30,12 +30,15 @@ class Verifier extends AbstractService
 	protected $errors = [];
 	/** @var ?bool */
 	protected $isValid = null;
+	/** @var ?User */
+	protected $user;
 
-	public function __construct(\XF\App $app, $token, $domain = null, array $options = [])
+	public function __construct(\XF\App $app, ?User $user, string $token, string $domain = null, array $options = [])
 	{
 		$this->options = array_merge($this->options, $options);
+		$this->user = $user;
 		$this->token = $token;
-		$this->domain = $domain;
+		$this->domain = $domain ?? '';
 
 		parent::__construct($app);
 	}
@@ -61,7 +64,7 @@ class Verifier extends AbstractService
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
 		}
 
-		if ($this->options['checkDomain'] && !$this->domain)
+		if ($this->options['checkDomain'] && \strlen($this->domain) === 0)
 		{
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_domain');
 		}
@@ -140,10 +143,11 @@ class Verifier extends AbstractService
 			$this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_domain_not_match_license');
 		}
 
+		$userId = $this->user->user_id ?? 0;
 		if ($this->options['uniqueChecks']['license'])
 		{
 			if ($this->finder('XF:User')
-					 ->where('user_id', '!=', \XF::visitor()->user_id)
+					 ->where('user_id', '!=', $userId)
 					 ->where('XenForoLicense.license_token', $this->api->license_token)
 					 ->total() > 0)
 			{
@@ -154,7 +158,7 @@ class Verifier extends AbstractService
 		if ($this->options['uniqueChecks']['customer'])
 		{
 			if ($this->finder('XF:User')
-					 ->where('user_id', '!=', \XF::visitor()->user_id)
+					 ->where('user_id', '!=', $userId)
 					 ->where('XenForoLicense.customer_token', $this->api->customer_token)
 					 ->total() > 0)
 			{

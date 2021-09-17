@@ -44,7 +44,7 @@ class Registration extends XFCP_Registration
 				return;
 			}
 
-			$this->liamw_xenforolicenseverification_verificationService = $this->service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $verificationData['token'], $verificationData['domain']);
+			$this->liamw_xenforolicenseverification_verificationService = $this->service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', null, $verificationData['token'], $verificationData['domain']);
 
 			if (!$this->liamw_xenforolicenseverification_verificationService->isValid($error))
 			{
