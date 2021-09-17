@@ -57,7 +57,8 @@ class Verifier extends AbstractService
 	{
 		$this->processOptionDefaults();
 
-		$this->api = new XFApi($this->app->http()->client(), $this->token, $this->domain);
+		$class = $this->app->extendClass(XFApi::class);
+		$this->api = new $class($this->app->http()->client(), $this->token, $this->domain);
 
 		if (!$this->token || strlen($this->token) != 32 || !preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $this->token))
 		{

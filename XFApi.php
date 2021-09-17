@@ -86,22 +86,22 @@ class XFApi
 		return $this->responseCode;
 	}
 
-	final public function __get($name)
+	public function __get($name)
 	{
 		return $this->responseJson[$name] ?? null;
 	}
 
-	final public function __isset($name)
+	public function __isset($name)
 	{
 		return isset($this->responseJson[$name]);
 	}
 
-	final public function __set($name, $value)
+	public function __set($name, $value)
 	{
 		throw new \BadMethodCallException("Cannot set values on LicenseValidator");
 	}
 
-	final public function __unset($name)
+	public function __unset($name)
 	{
 		throw new \BadMethodCallException("Cannot unset values on LicenseValidator");
 	}
