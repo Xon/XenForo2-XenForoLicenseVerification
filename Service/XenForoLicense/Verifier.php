@@ -139,13 +139,16 @@ class Verifier extends AbstractService
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
         }
 
-        if ($this->options['checkDomain'] && !$this->api->domain_match)
+        // https://xenforo.com/community/threads/xenforo-license-verification.132213/post-1540456
+        // Cloud licenses domain matching may not be reliable
+        if ($this->options['checkDomain'] && !$this->api->domain_match && !$this->api->is_cloud)
         {
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_domain_not_match_license');
         }
 
+        // XF cloud may not have a license token
         $userId = $this->user->user_id ?? 0;
-        if ($this->options['uniqueChecks']['license'])
+        if ($this->options['uniqueChecks']['license'] && $this->api->license_token)
         {
             if ($this->finder('XF:User')
                      ->where('user_id', '!=', $userId)
@@ -183,7 +186,9 @@ class Verifier extends AbstractService
         $licenseData->validation_token = $this->api->validation_token;
         $licenseData->customer_token = $this->api->customer_token;
         $licenseData->license_token = $this->api->license_token;
+        $licenseData->subscription_token = $this->api->subscription_token;
         $licenseData->can_transfer = $this->api->can_transfer;
+        $licenseData->is_cloud = $this->api->is_cloud;
         $licenseData->domain = $this->api->test_domain;
         $licenseData->domain_match = $this->api->domain_match;
         $licenseData->validation_date = \XF::$time;

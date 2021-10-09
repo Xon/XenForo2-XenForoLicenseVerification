@@ -9,11 +9,13 @@ use GuzzleHttp\Exception\ServerException;
 /**
  * @property string validation_token
  * @property string customer_token
- * @property string license_token
+ * @property string|null license_token
+ * @property string|null subscription_token
  * @property boolean can_transfer
  * @property string test_domain
  * @property boolean domain_match
  * @property boolean is_valid
+ * @property boolean is_cloud
  */
 class XFApi
 {
@@ -67,6 +69,8 @@ class XFApi
 			if (\is_array($json))
 			{
 				$this->responseJson = $json;
+                $this->responseJson['is_cloud'] = $this->validation_token !== null && \strpos($this->validation_token, 'cl_') === 0 ||
+                                                  $this->subscription_token !== null;
 			}
 			else
 			{

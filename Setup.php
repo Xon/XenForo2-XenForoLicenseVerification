@@ -18,7 +18,7 @@ class Setup extends AbstractSetup
 	use StepRunnerUninstallTrait;
 	use StepRunnerUpgradeTrait;
 
-	public function installStep1()
+	public function installStep1(): void
 	{
 		$sm = $this->schemaManager();
 
@@ -108,12 +108,7 @@ class Setup extends AbstractSetup
 		});
 	}
 
-	public function upgrade3040004Step1(): void
-	{
-		$this->installStep1();
-	}
-
-    public function upgrade3040004Step2()
+    public function upgrade3040004Step2(): void
     {
         $userIds = $this->db()->fetchAllColumn('
             SELECT DISTINCT user_id 
@@ -131,7 +126,13 @@ class Setup extends AbstractSetup
         }
     }
 
-	public function uninstallStep1()
+
+    public function upgrade3040100Step1(): void
+    {
+        $this->installStep1();
+    }
+
+	public function uninstallStep1(): void
 	{
 		$sm = $this->schemaManager();
 
@@ -141,7 +142,7 @@ class Setup extends AbstractSetup
 		}
 	}
 
-    public function uninstallStep2()
+    public function uninstallStep2(): void
     {
         $userIds = $this->db()->fetchAllColumn('
             SELECT DISTINCT user_id 
@@ -206,9 +207,11 @@ class Setup extends AbstractSetup
 				$this->addOrChangeColumn($table,'validation_token', 'varchar', 50)->nullable();
 				$this->addOrChangeColumn($table,'customer_token', 'varchar', 50);
 				$this->addOrChangeColumn($table,'license_token', 'varchar', 50)->nullable();
+                $this->addOrChangeColumn($table,'subscription_token', 'varchar', 50)->nullable();
 				$this->addOrChangeColumn($table,'domain', 'varchar', 255)->nullable();
 				$this->addOrChangeColumn($table,'domain_match', 'bool')->nullable();
 				$this->addOrChangeColumn($table,'can_transfer', 'bool')->nullable();
+                $this->addOrChangeColumn($table,'is_cloud', 'bool')->nullable();
 				$this->addOrChangeColumn($table,'validation_date', 'int')->nullable();
 				$this->addOrChangeColumn($table,'valid', 'tinyint')->setDefault(1);
 			},

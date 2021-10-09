@@ -60,6 +60,13 @@
 			{$user.XenForoLicense.license_token}
 		</xf:formrow>
 
+        <xf:if is="$user.XenForoLicense.is_cloud">
+        <xf:formrow label="{{ phrase('liamw_xenforolicenseverification_subscription_token') }}"
+                    explain="">
+            {$user.XenForoLicense.subscription_token}
+        </xf:formrow>
+        </xf:if>
+
 		<xf:formrow label="{{ phrase('liamw_xenforolicenseverification_domain') }}"
 			explain="{{ phrase('liamw_xenforolicenseverification_domain_explain') }}">
 			{$user.XenForoLicense.domain}
@@ -68,6 +75,11 @@
         <xf:formrow label="{{ phrase('liamw_xenforolicenseverification_transfer') }}"
                     explain="">
             {{ $user.XenForoLicense.can_transfer ? phrase('yes') : phrase('no') }}
+        </xf:formrow>
+
+        <xf:formrow label="{{ phrase('liamw_xenforolicenseverification_is_cloud') }}"
+                    explain="">
+            {{ $user.XenForoLicense.is_cloud ? phrase('yes') : phrase('no') }}
         </xf:formrow>
 
 		<xf:formrow label="{{ phrase('liamw_xenforolicenseverification_last_verification_date') }}">

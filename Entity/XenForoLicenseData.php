@@ -10,13 +10,15 @@ use XF\Mvc\Entity\Structure;
  * COLUMNS
  *
  * @property int user_id
- * @property string validation_token
+ * @property string|null validation_token
  * @property string customer_token
- * @property string license_token
+ * @property string|null license_token
+ * @property string|null subscription_token
  * @property string|null domain
  * @property bool|null domain_match
- * @property bool can_transfer
- * @property int validation_date
+ * @property bool|null can_transfer
+ * @property bool|null is_cloud
+ * @property int|null validation_date
  * @property bool valid
  *
  * RELATIONS
@@ -70,6 +72,13 @@ class XenForoLicenseData extends Entity
                 'nullable'  => true,
                 'api'       => true
             ],
+            'subscription_token'    => [
+                'type'      => self::STR,
+                'maxLength' => 50,
+                'required'  => true,
+                'nullable'  => true,
+                'api'       => true
+            ],
             'domain'           => [
                 'type'      => self::STR,
                 'maxLength' => 255,
@@ -89,6 +98,13 @@ class XenForoLicenseData extends Entity
                 'required' => true,
                 'nullable' => true,
                 'api'      => true
+            ],
+            'is_cloud'     => [
+                'type'      => self::BOOL,
+                'required'  => true,
+                'nullable'  => true,
+                'api'       => true,
+                'changeLog' => false
             ],
             'validation_date'  => [
                 'type'     => self::UINT,
