@@ -69,7 +69,8 @@ class XFApi
 			if (\is_array($json))
 			{
 				$this->responseJson = $json;
-                $this->responseJson['is_cloud'] = $this->subscription_token !== null && \strpos($this->subscription_token, 'cl_') === 0;
+                $this->responseJson['is_cloud'] = $this->validation_token !== null && \strpos($this->validation_token, 'cl_') === 0 ||
+                                                  $this->subscription_token !== null;
 			}
 			else
 			{
