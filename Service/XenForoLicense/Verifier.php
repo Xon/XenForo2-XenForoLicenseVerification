@@ -146,14 +146,21 @@ class Verifier extends AbstractService
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_domain_not_match_license');
         }
 
-        // XF cloud may not have a license token
         $userId = $this->user->user_id ?? 0;
-        if ($this->options['uniqueChecks']['license'] && $this->api->license_token)
+        if ($this->options['uniqueChecks']['license'])
         {
-            if ($this->finder('XF:User')
-                     ->where('user_id', '!=', $userId)
-                     ->where('XenForoLicense.license_token', $this->api->license_token)
-                     ->total() > 0)
+            $finder = $this->finder('XF:User')
+                           ->where('user_id', '!=', $userId);
+            if ($this->api->license_token)
+            {
+                $finder->where('XenForoLicense.license_token', $this->api->license_token);
+            }
+            else if ($this->api->subscription_token)
+            {
+                $finder->where('XenForoLicense.subscription_token', $this->api->subscription_token);
+            }
+
+            if ($finder->total() > 0)
             {
                 $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_license_token_not_unique');
             }

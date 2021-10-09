@@ -55,17 +55,17 @@
 			<xf:set var="$licenseTokenExplain">{{ phrase('liamw_xenforolicenseverification_license_token_explain_admin') }}</xf:set>
 		</xf:if>
 
-		<xf:formrow label="{{ phrase('liamw_xenforolicenseverification_license_token') }}"
-			explain="{$licenseTokenExplain}">
-			{$user.XenForoLicense.license_token}
-		</xf:formrow>
-
-        <xf:if is="$user.XenForoLicense.is_cloud">
-        <xf:formrow label="{{ phrase('liamw_xenforolicenseverification_subscription_token') }}"
-                    explain="">
-            {$user.XenForoLicense.subscription_token}
-        </xf:formrow>
-        </xf:if>
+		<xf:if is="$user.XenForoLicense.is_cloud">
+			<xf:formrow label="{{ phrase('liamw_xenforolicenseverification_subscription_token') }}"
+					explain="">
+				{$user.XenForoLicense.subscription_token}
+			</xf:formrow>
+		<xf:else/>
+            <xf:formrow label="{{ phrase('liamw_xenforolicenseverification_license_token') }}"
+                        explain="{$licenseTokenExplain}">
+                {$user.XenForoLicense.license_token}
+            </xf:formrow>
+		</xf:if>
 
 		<xf:formrow label="{{ phrase('liamw_xenforolicenseverification_domain') }}"
 			explain="{{ phrase('liamw_xenforolicenseverification_domain_explain') }}">

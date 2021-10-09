@@ -20,6 +20,7 @@ class XenForoLicenseData extends AbstractHandler
 			['validation_token', 'like', $finder->escapeLike($text, '%?%')],
 			['customer_token', 'like', $finder->escapeLike($text, '%?%')],
 			['license_token', 'like', $finder->escapeLike($text, '%?%')],
+			['subscription_token', 'like', $finder->escapeLike($text, '%?%')],
 			['domain', 'like', $finder->escapeLike($text, '%?%')],
 		];
 		if ($previousMatchIds)
