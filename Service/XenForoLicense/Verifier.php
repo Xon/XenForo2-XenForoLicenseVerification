@@ -62,7 +62,7 @@ class Verifier extends AbstractService
         $this->token = \preg_replace('/[\s\r\n]/', '', $this->token);
 
         // token for XF licences vs Cloud licenses are slightly different
-        if (!\preg_match('/^(?:cl_|)[a-z0-9]{32}$/i', $this->token))
+        if (!\preg_match('/^(?:cl_|)[a-f0-9]{32}$/i', $this->token))
         {
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
         }
