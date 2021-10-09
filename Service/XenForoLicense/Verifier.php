@@ -58,10 +58,11 @@ class Verifier extends AbstractService
     {
         $this->processOptionDefaults();
 
-        $class = $this->app->extendClass(XFApi::class);
-        $this->api = new $class($this->app->http()->client(), $this->token, $this->domain);
+        // trim out whitespace
+        $this->token = \preg_replace('/[\s\r\n]/', '', $this->token);
 
-        if (!$this->token || strlen($this->token) !== 32 || !preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $this->token))
+        // token for XF licences vs Cloud licenses are slightly different
+        if (!\preg_match('/^(?:cl_|)[a-z0-9]{32}$/i', $this->token))
         {
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
         }
@@ -70,6 +71,9 @@ class Verifier extends AbstractService
         {
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_domain');
         }
+
+        $class = $this->app->extendClass(XFApi::class);
+        $this->api = new $class($this->app->http()->client(), $this->token, $this->domain);
     }
 
     protected function processOptionDefaults()
