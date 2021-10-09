@@ -139,9 +139,7 @@ class Verifier extends AbstractService
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_token');
         }
 
-        // https://xenforo.com/community/threads/xenforo-license-verification.132213/post-1540456
-        // Cloud licenses domain matching may not be reliable
-        if ($this->options['checkDomain'] && !$this->api->domain_match && !$this->api->is_cloud)
+        if ($this->options['checkDomain'] && !$this->api->domain_match)
         {
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_domain_not_match_license');
         }
