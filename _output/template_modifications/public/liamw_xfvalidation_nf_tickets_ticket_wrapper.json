@@ -1,0 +1,9 @@
+{
+    "template": "nf_tickets_ticket_wrapper",
+    "description": "Inject ticket licencing information into the ticket",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<xf:sidebar key=\"nfTicketsTicketInfoSidebar\">",
+    "replace": "<xf:include template=\"nf_tickets_ticket_wrapper_xf_licence_sidebar\" />\n$0"
+}

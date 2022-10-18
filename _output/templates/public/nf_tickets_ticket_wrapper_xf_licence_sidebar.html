@@ -1,0 +1,8 @@
+<xf:if is="$xf.visitor.is_admin && $ticket.user_id">
+	<xf:sidebar key="XenForoLicenseInfoSidebar">
+		<xf:macro template="liamw_xenforolicenseverification_macros"
+				  name="ticket"
+				  arg-user="{$ticket.User}"
+				  />
+	</xf:sidebar>
+</xf:if>

@@ -16,5 +16,8 @@
         "XF": [2020070, "XenForo 2.2.0+"],
         "SV/StandardLib": [1010000,"Standard Library by Xon v1.1.0+"]
     },
+    "require-soft": {
+        "NF/Tickets": [2000070, "NixFifty's Tickets v2.0.0+", false]
+    },
     "icon": "logo.png"
 }
