@@ -37,7 +37,7 @@ class Verifier extends AbstractService
     /** @var ?User */
     protected $user;
 
-    public function __construct(\XF\App $app, ?User $user, string $token, string $domain = null, array $options = [])
+    public function __construct(\XF\App $app, ?User $user, string $token, ?string $domain = null, array $options = [])
     {
         $this->options = array_merge($this->options, $options);
         $this->user = $user;
