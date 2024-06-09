@@ -8,20 +8,20 @@ use XF\Mvc\Entity\Structure;
 
 /**
  * COLUMNS
- * @property int $user_id
- * @property string|null $validation_token
- * @property string $customer_token
- * @property string|null $license_token
- * @property string|null $subscription_token
- * @property string|null $domain
- * @property bool|null $domain_match
- * @property bool|null $can_transfer
- * @property bool|null $is_cloud
- * @property int|null $validation_date
- * @property bool $valid
+ * @property int            $user_id
+ * @property string|null    $validation_token
+ * @property string         $customer_token
+ * @property string|null    $license_token
+ * @property string|null    $subscription_token
+ * @property string|null    $domain
+ * @property bool|null      $domain_match
+ * @property bool|null      $can_transfer
+ * @property bool|null      $is_cloud
+ * @property int|null       $validation_date
+ * @property bool           $valid
  *
  * RELATIONS
- * @property-read \XF\Entity\User|null $User
+ * @property-read User|null $User
  */
 class XenForoLicenseData extends Entity
 {

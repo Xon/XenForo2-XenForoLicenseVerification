@@ -2,7 +2,9 @@
 
 namespace LiamW\XenForoLicenseVerification\Cli\Command;
 
+use LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier as VerifierService;
 use LiamW\XenForoLicenseVerification\XF\Entity\User;
+use SV\StandardLib\Helper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,8 +28,7 @@ class CheckUserLicence extends Command
     {
         $username = $input->getArgument('username');
 
-        /** @var \XF\Repository\User $userRepo */
-        $userRepo = \XF::repository('XF:User');
+        $userRepo = Helper::repository(\XF\Repository\User::class);
         /** @var ?User $user */
         $user = $userRepo->getUserByNameOrEmail($username);
         if ($user === null)
@@ -45,8 +46,7 @@ class CheckUserLicence extends Command
             return 1;
         }
 
-        /** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
-        $validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', $user, $licence->validation_token, $licence->domain);
+        $validationService = Helper::service(VerifierService::class, $user, $licence->validation_token, $licence->domain);
 
         if (!$validationService->isValid($error))
         {

@@ -2,6 +2,7 @@
 
 namespace LiamW\XenForoLicenseVerification;
 
+use SV\StandardLib\Helper;
 use SV\StandardLib\InstallerHelper;
 use XF\AddOn\AbstractSetup;
 use XF\AddOn\StepRunnerInstallTrait;
@@ -118,8 +119,7 @@ class Setup extends AbstractSetup
 
         foreach ($userIds as $userId)
         {
-            /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
-            $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+            $userGroupChangeService = Helper::service(\XF\Service\User\UserGroupChange::class);
             $userGroupChangeService->removeUserGroupChange($userId, 'xiLicenseValidationValidated');
             $userGroupChangeService->removeUserGroupChange($userId, 'liam_xenLicenseValidation_licensedChange');
             $userGroupChangeService->removeUserGroupChange($userId, 'liam_xenLicenseValidation_transferableChange');
@@ -151,8 +151,7 @@ class Setup extends AbstractSetup
 
         foreach ($userIds as $userId)
         {
-            /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
-            $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+            $userGroupChangeService = Helper::service(\XF\Service\User\UserGroupChange::class);
             $userGroupChangeService->removeUserGroupChange($userId, 'xfLicenseValid');
             $userGroupChangeService->removeUserGroupChange($userId, 'xfLicenseTransferable');
         }

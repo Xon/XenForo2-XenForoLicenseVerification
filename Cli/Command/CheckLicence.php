@@ -2,6 +2,8 @@
 
 namespace LiamW\XenForoLicenseVerification\Cli\Command;
 
+use LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier as VerifierService;
+use SV\StandardLib\Helper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,8 +41,7 @@ class CheckLicence extends Command
 
         $domain = $input->getArgument('domain') ?? '';
 
-        /** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $validationService */
-        $validationService = \XF::service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', null, $validationToken, $domain);
+        $validationService = Helper::service(VerifierService::class, null, $validationToken, $domain);
 
         if (!$validationService->isValid($error))
         {

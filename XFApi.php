@@ -7,15 +7,15 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 
 /**
- * @property string validation_token
- * @property string customer_token
- * @property string|null license_token
- * @property string|null subscription_token
- * @property bool can_transfer
- * @property string test_domain
- * @property bool domain_match
- * @property bool is_valid
- * @property bool is_cloud
+ * @property string $validation_token
+ * @property string $customer_token
+ * @property string|null $license_token
+ * @property string|null $subscription_token
+ * @property bool $can_transfer
+ * @property string $test_domain
+ * @property bool $domain_match
+ * @property bool $is_valid
+ * @property bool $is_cloud
  */
 class XFApi
 {

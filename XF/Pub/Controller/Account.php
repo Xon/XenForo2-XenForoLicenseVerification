@@ -5,6 +5,8 @@
 
 namespace LiamW\XenForoLicenseVerification\XF\Pub\Controller;
 
+use LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier as VerifierService;
+use SV\StandardLib\Helper;
 use XF\Mvc\Reply\AbstractReply;
 
 class Account extends XFCP_Account
@@ -37,8 +39,7 @@ class Account extends XFCP_Account
                 ]
             ]);
 
-            /** @var \LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier $verificationService */
-            $verificationService = $this->service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', \XF::visitor(), $input['xenforo_license_verification']['token'], $input['xenforo_license_verification']['domain']);
+            $verificationService = Helper::service(VerifierService::class, \XF::visitor(), $input['xenforo_license_verification']['token'], $input['xenforo_license_verification']['domain']);
 
             if ($verificationService->isValid($error))
             {

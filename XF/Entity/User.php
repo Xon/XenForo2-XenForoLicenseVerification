@@ -6,6 +6,7 @@
 namespace LiamW\XenForoLicenseVerification\XF\Entity;
 
 use LiamW\XenForoLicenseVerification\Entity\XenForoLicenseData;
+use SV\StandardLib\Helper;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -37,8 +38,7 @@ class User extends XFCP_User
             $this->saveIfChanged($saved, true, false);
         }
 
-        /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
-        $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+        $userGroupChangeService = Helper::service(\XF\Service\User\UserGroupChange::class);
         $userGroupChangeService->removeUserGroupChange($this->user_id, 'xfLicenseValid');
         $userGroupChangeService->removeUserGroupChange($this->user_id, 'xfLicenseTransferable');
 
@@ -46,8 +46,7 @@ class User extends XFCP_User
 
         if ($sendAlert)
         {
-            /** @var \XF\Repository\UserAlert $alertRepo */
-            $alertRepo = \XF::repository('XF:UserAlert');
+            $alertRepo = Helper::repository(\XF\Repository\UserAlert::class);
             $alertRepo->alert($this, $this->user_id, $this->username, 'user', $this->user_id, 'xflicenseverification_lapsed');
         }
     }

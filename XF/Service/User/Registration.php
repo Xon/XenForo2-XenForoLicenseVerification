@@ -5,14 +5,15 @@
 
 namespace LiamW\XenForoLicenseVerification\XF\Service\User;
 
-use LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier;
+use LiamW\XenForoLicenseVerification\Service\XenForoLicense\Verifier as VerifierService;
+use SV\StandardLib\Helper;
 
 class Registration extends XFCP_Registration
 {
     // Ugly field name, but it'll prevent clashes.
     protected $liamw_xenforolicenseverification_xenforo_license_data;
 
-    /** @var Verifier */
+    /** @var VerifierService */
     protected $liamw_xenforolicenseverification_verificationService = null;
 
     public function setFromInput(array $input)
@@ -44,7 +45,7 @@ class Registration extends XFCP_Registration
                 return;
             }
 
-            $this->liamw_xenforolicenseverification_verificationService = $this->service('LiamW\XenForoLicenseVerification:XenForoLicense\Verifier', null, $verificationData['token'], $verificationData['domain']);
+            $this->liamw_xenforolicenseverification_verificationService = Helper::service(VerifierService::class, null, $verificationData['token'], $verificationData['domain']);
 
             if (!$this->liamw_xenforolicenseverification_verificationService->isValid($error))
             {

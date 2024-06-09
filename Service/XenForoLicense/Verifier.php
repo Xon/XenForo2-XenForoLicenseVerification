@@ -4,6 +4,7 @@ namespace LiamW\XenForoLicenseVerification\Service\XenForoLicense;
 
 use LiamW\XenForoLicenseVerification\Entity\XenForoLicenseData;
 use LiamW\XenForoLicenseVerification\XFApi;
+use SV\StandardLib\Helper;
 use XF\Entity\User;
 use XF\Service\AbstractService;
 
@@ -11,7 +12,9 @@ class Verifier extends AbstractService
 {
     /** @var XFApi */
     protected $api;
+    /** @var string */
     protected $token;
+    /** @var ?string */
     protected $domain;
 
     protected $options = [
@@ -72,8 +75,7 @@ class Verifier extends AbstractService
             $this->errors[] = \XF::phraseDeferred('liamw_xenforolicenseverification_please_enter_a_valid_xenforo_license_validation_domain');
         }
 
-        $class = $this->app->extendClass(XFApi::class);
-        $this->api = new $class($this->app->http()->client(), $this->token, $this->domain);
+        $this->api = Helper::newExtendedClass(XFApi::class, $this->app->http()->client(), $this->token, $this->domain);
     }
 
     protected function processOptionDefaults()
@@ -209,15 +211,13 @@ class Verifier extends AbstractService
 
         if ($this->options['licensedUserGroup']['setAsPrimary'] !== true && $this->options['licensedUserGroup']['id'])
         {
-            /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
-            $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+            $userGroupChangeService = Helper::service(\XF\Service\User\UserGroupChange::class);
             $userGroupChangeService->addUserGroupChange($user->user_id, 'xfLicenseValid', $this->options['licensedUserGroup']['id']);
         }
 
         if ($this->options['transferableUserGroup'] && $this->api->can_transfer)
         {
-            /** @var \XF\Service\User\UserGroupChange $userGroupChangeService */
-            $userGroupChangeService = \XF::app()->service('XF:User\UserGroupChange');
+            $userGroupChangeService = Helper::service(\XF\Service\User\UserGroupChange::class);
             $userGroupChangeService->addUserGroupChange($user->user_id, 'xfLicenseTransferable', $this->options['transferableUserGroup']);
         }
 
