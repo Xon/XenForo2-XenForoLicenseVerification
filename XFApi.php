@@ -11,11 +11,11 @@ use GuzzleHttp\Exception\ServerException;
  * @property string customer_token
  * @property string|null license_token
  * @property string|null subscription_token
- * @property boolean can_transfer
+ * @property bool can_transfer
  * @property string test_domain
- * @property boolean domain_match
- * @property boolean is_valid
- * @property boolean is_cloud
+ * @property bool domain_match
+ * @property bool is_valid
+ * @property bool is_cloud
  */
 class XFApi
 {

@@ -1,0 +1,9 @@
+{
+    "template": "dbtech_ecommerce_tickets_thread_view_type_ticket",
+    "description": "Inject ticket licencing information into the ticket (DBTech)",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<!--[XF:DBTechTickets:sidebar_bottom]-->",
+    "replace": "<xf:include template=\"dbtech_ecommerce_tickets_thread_view_type_ticket_xf_licence_sidebar\" />\n\t$0"
+}

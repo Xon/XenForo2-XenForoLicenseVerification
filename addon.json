@@ -2,8 +2,8 @@
     "legacy_addon_id": "liam_licensecheck",
     "title": "XenForo License Verification",
     "description": "Verify the XenForo License of board members.",
-    "version_id": 3050000,
-    "version_string": "3.5.0",
+    "version_id": 3060070,
+    "version_string": "3.6.0",
     "dev": "Atelier Aphelion",
     "dev_url": "https://atelieraphelion.com/",
     "faq_url": "",
@@ -12,12 +12,30 @@
         "Contribute on GitHub": "https://github.com/Xon/XenForo2-XenForoLicenseVerification"
     },
     "require": {
-        "php": ["7.2.0", "PHP 7.2.0+"],
-        "XF": [2020070, "XenForo 2.2.0+"],
-        "SV/StandardLib": [1010000,"Standard Library by Xon v1.1.0+"]
+        "php": [
+            "7.2.0",
+            "PHP 7.2.0+"
+        ],
+        "XF": [
+            2020070,
+            "XenForo 2.2.0+"
+        ],
+        "SV/StandardLib": [
+            1010000,
+            "Standard Library by Xon v1.1.0+"
+        ]
     },
+    "icon": "logo.png",
     "require-soft": {
-        "NF/Tickets": [2000070, "NixFifty's Tickets v2.0.0+", false]
-    },
-    "icon": "logo.png"
+        "NF/Tickets": [
+            2000070,
+            "NixFifty's Tickets v2.0.0+",
+            false
+        ],
+        "DBTech/Tickets": [
+            3000031,
+            "DragonByte eCommerce: Tickets v3.0.0+",
+            false
+        ]
+    }
 }

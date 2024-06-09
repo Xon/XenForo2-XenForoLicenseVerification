@@ -9,7 +9,7 @@
 			<div class="block-body">
 				<h3 class="block-header">{{ phrase('liamw_xenforolicenseverification_license_details') }}</h3>
 
-				<xf:macro template="liamw_xenforolicenseverification_macros" name="liamw_xenforolicense_license_detail_fields" arg-user="{$xf.visitor}"
+				<xf:macro id="liamw_xenforolicenseverification_macros::liamw_xenforolicense_license_detail_fields" arg-user="{$xf.visitor}"
 					arg-updateLink="{{ link('account/xenforo-license/update') }}" arg-removeLink="{{ link('account/xenforo-license/remove') }}"/>
 			</div>
 		</div>
@@ -18,7 +18,7 @@
 	<xf:form action="{{ link('account/xenforo-license/update') }}" class="block" ajax="true">
 		<div class="block-container">
 			<div class="block-body">
-				<xf:macro template="liamw_xenforolicenseverification_macros" name="liamw_xenforolicense_form_fields" arg-context="account"/>
+				<xf:macro id="liamw_xenforolicenseverification_macros::liamw_xenforolicense_form_fields" arg-context="account"/>
 
 				<xf:submitrow label="{{ phrase('apply') }}" icon="apply"/>
 			</div>

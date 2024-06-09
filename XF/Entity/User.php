@@ -10,7 +10,7 @@ use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
 /**
- * Extends \XF\Entity\User
+ * @extends \XF\Entity\User
  *
  * @property XenForoLicenseData XenForoLicense
  */

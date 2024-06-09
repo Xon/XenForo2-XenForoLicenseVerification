@@ -1,4 +1,7 @@
 <?php
+/**
+ * @noinspection PhpMissingReturnTypeInspection
+ */
 
 namespace LiamW\XenForoLicenseVerification\XF\Pub\Controller;
 
