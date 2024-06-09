@@ -1,4 +1,4 @@
-<xf:macro id="ticket" arg-user="!">
+<xf:macro name="ticket" arg-user="!">
 	<div class="block js-xenforoLicenseInfoSidebar">
 		<div class="block-container">
 			<h3 class="block-minorHeader">{{ phrase('liamw_xenforolicenseverification_xenforo_license_details') }}</h3>
@@ -49,7 +49,7 @@
 	</div>
 </xf:macro>
 
-<xf:macro id="liamw_xenforolicense_license_detail_fields" arg-user="!"
+<xf:macro name="liamw_xenforolicense_license_detail_fields" arg-user="!"
 		  arg-updateLink="{{ null }}" arg-removeLink="{{ null }}" arg-context="account">
 	<xf:set var="$showInvalid" value="{{ $context === 'admin' && !$user.XenForoLicense.valid }}"/>
 
@@ -144,7 +144,7 @@
 	</xf:if>
 </xf:macro>
 
-<xf:macro id="liamw_xenforolicense_form_fields" arg-context="!">
+<xf:macro name="liamw_xenforolicense_form_fields" arg-context="!">
 	<xf:if is="$context === 'registration'">
 		<xf:set var="$tokenExplain" value="{{ phrase('liamw_xenforolicenseverification_validation_token_explain_input_registration') }}"/>
 		<xf:set var="$tokenHint"

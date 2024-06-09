@@ -1,0 +1,9 @@
+{
+    "template": "register_form",
+    "description": "XF2.2",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<xf:macro template=\"register_macros\" name=\"custom_fields\" />",
+    "replace": "$0\n<xf:if is=\"{$xf.options.liamw_xenforolicenseverification_registration.request}\">\n\t<hr class=\"formRowSep\" />\n\n\t<xf:macro name=\"liamw_xenforolicenseverification_macros::liamw_xenforolicense_form_fields\" arg-context=\"registration\" />\n\n\t<hr class=\"formRowSep\" />\n</xf:if>"
+}
